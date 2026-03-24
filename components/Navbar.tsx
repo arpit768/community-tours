@@ -6,7 +6,7 @@ import { UserRole } from '../types';
 interface NavbarProps {
   user: UserType | null;
   onLogout: () => void;
-  onViewChange: (view: 'customer' | 'owner' | 'staff' | 'admin' | 'profile' | 'dashboard') => void;
+  onViewChange: (view: 'customer' | 'staff' | 'admin' | 'profile' | 'dashboard') => void;
   currentView: string;
   notifications: AppNotification[];
   onMarkNotificationsRead: (role: UserRole) => void;
@@ -30,12 +30,7 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
 
   const getNavLinks = () => {
     if (!user) return [];
-    const links: Array<{ label: string; view: 'customer' | 'owner' | 'staff' | 'admin' | 'profile' | 'dashboard' }> = [];
-    switch (user.role) {
-      case 'OWNER':
-        links.push({ label: 'My Tour Packages', view: 'owner' });
-        break;
-    }
+    const links: Array<{ label: string; view: 'customer' | 'staff' | 'admin' | 'profile' | 'dashboard' }> = [];
     return links;
   };
 
@@ -50,7 +45,6 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
     switch (user.role) {
       case UserRole.ADMIN: return 'Administrator';
       case UserRole.STAFF: return 'Staff';
-      case UserRole.OWNER: return 'Tour Operator';
       case UserRole.CUSTOMER: return 'Traveler';
       default: return '';
     }
@@ -84,7 +78,6 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
     if (!user) return 'dashboard' as const;
     switch (user.role) {
       case UserRole.CUSTOMER: return 'customer' as const;
-      case UserRole.OWNER: return 'owner' as const;
       case UserRole.STAFF: return 'staff' as const;
       case UserRole.ADMIN: return 'admin' as const;
       default: return 'dashboard' as const;
@@ -159,7 +152,7 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
 
                 {/* Notification Dropdown */}
                 {notifOpen && (
-                  <div className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
+                  <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 z-50 overflow-hidden">
                     <div className="px-5 py-4 bg-gradient-to-r from-gray-50 to-white border-b border-gray-100">
                       <div className="flex items-center justify-between">
                         <h3 className="font-bold text-gray-900">Notifications</h3>

@@ -159,14 +159,14 @@ app.get('/api/tours/:id', (req, res) => {
 });
 
 app.post('/api/tours', authenticateToken, (req, res) => {
-  if (req.user.role !== 'OWNER' && req.user.role !== 'ADMIN') {
-    return res.status(403).json({ message: 'Only tour operators can add packages' });
+  if (req.user.role !== 'ADMIN' && req.user.role !== 'STAFF') {
+    return res.status(403).json({ message: 'Only admin and staff can add packages' });
   }
 
   const tour = {
     id: generateId(),
     ...req.body,
-    ownerId: req.user.id,
+    createdBy: req.user.id,
     verificationStatus: 'PENDING',
     available: true,
     createdAt: new Date().toISOString()
@@ -185,7 +185,7 @@ app.patch('/api/tours/:id', authenticateToken, (req, res) => {
   const tour = tours[index];
 
   // Check permissions
-  if (tour.ownerId !== req.user.id && req.user.role !== 'ADMIN' && req.user.role !== 'STAFF') {
+  if (req.user.role !== 'ADMIN' && req.user.role !== 'STAFF') {
     return res.status(403).json({ message: 'Unauthorized' });
   }
 
@@ -200,7 +200,7 @@ app.patch('/api/tours/:id/toggle-availability', authenticateToken, (req, res) =>
   }
 
   const tour = tours[index];
-  if (tour.ownerId !== req.user.id && req.user.role !== 'ADMIN') {
+  if (req.user.role !== 'ADMIN' && req.user.role !== 'STAFF') {
     return res.status(403).json({ message: 'Unauthorized' });
   }
 
@@ -229,7 +229,7 @@ app.delete('/api/tours/:id', authenticateToken, (req, res) => {
   }
 
   const tour = tours[index];
-  if (tour.ownerId !== req.user.id && req.user.role !== 'ADMIN') {
+  if (req.user.role !== 'ADMIN' && req.user.role !== 'STAFF') {
     return res.status(403).json({ message: 'Unauthorized' });
   }
 
@@ -247,9 +247,6 @@ app.get('/api/bookings', authenticateToken, (req, res) => {
   // Filter based on user role
   if (req.user.role === 'CUSTOMER') {
     filtered = filtered.filter(b => b.customerId === req.user.id);
-  } else if (req.user.role === 'OWNER') {
-    const myTourIds = tours.filter(t => t.ownerId === req.user.id).map(t => t.id);
-    filtered = filtered.filter(b => myTourIds.includes(b.tourId));
   }
 
   if (customerId) filtered = filtered.filter(b => b.customerId === customerId);

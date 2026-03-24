@@ -17,7 +17,7 @@ export const NEPAL_LOCATIONS = [
 export const MOCK_TOURS: Tour[] = [
   {
     id: 't1',
-    ownerId: 'owner-1',
+    createdBy: 'admin-1',
     name: 'Annapurna Base Camp Trek',
     type: TourType.ADVENTURE_TREK,
     pricePerPerson: 25000,
@@ -33,7 +33,7 @@ export const MOCK_TOURS: Tour[] = [
   },
   {
     id: 't2',
-    ownerId: 'owner-1',
+    createdBy: 'admin-1',
     name: 'Chitwan Wildlife Safari',
     type: TourType.WILDLIFE_SAFARI,
     pricePerPerson: 12000,
@@ -49,7 +49,7 @@ export const MOCK_TOURS: Tour[] = [
   },
   {
     id: 't3',
-    ownerId: 'owner-1',
+    createdBy: 'admin-1',
     name: 'Kathmandu Cultural Heritage Tour',
     type: TourType.CULTURAL_TOUR,
     pricePerPerson: 8500,
@@ -65,7 +65,7 @@ export const MOCK_TOURS: Tour[] = [
   },
   {
     id: 't4',
-    ownerId: 'owner-1',
+    createdBy: 'admin-1',
     name: 'Everest Base Camp Expedition',
     type: TourType.MOUNTAIN_EXPEDITION,
     pricePerPerson: 85000,
@@ -81,7 +81,7 @@ export const MOCK_TOURS: Tour[] = [
   },
   {
     id: 't5',
-    ownerId: 'owner-1',
+    createdBy: 'admin-1',
     name: 'Lumbini Pilgrimage & Peace Tour',
     type: TourType.PILGRIMAGE,
     pricePerPerson: 9500,

@@ -56,8 +56,6 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
     .filter(b => b.status === 'COMPLETED')
     .reduce((sum, b) => sum + b.totalPrice, 0);
 
-  // Unique operators count
-  const uniqueOperators = new Set(tours.map(t => t.ownerId)).size;
 
   // Filtered tours
   const filteredTours = tours.filter(t => {
@@ -113,7 +111,7 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
       image: newTour.image || 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800',
       available: true,
       verificationStatus: VerificationStatus.VERIFIED,
-      ownerId: user.id,
+      createdBy: user.id,
     });
     setNewTour({
       name: '', type: TourType.ADVENTURE_TREK, location: '', pricePerPerson: '',
@@ -164,8 +162,8 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
                 <Shield className="w-6 h-6" />
               </div>
               <div>
-                <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-                <p className="text-gray-300">Platform-wide management and analytics</p>
+                <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Admin Dashboard</h1>
+                <p className="text-gray-300 text-sm sm:text-base">Platform management and analytics</p>
               </div>
             </div>
           </div>
@@ -223,8 +221,8 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
                 <Users className="w-6 h-6 text-orange-600" />
               </div>
               <div className="text-right">
-                <p className="text-3xl font-bold text-gray-900">{uniqueOperators}</p>
-                <p className="text-sm text-gray-500">Tour Operators</p>
+                <p className="text-3xl font-bold text-gray-900">{staffMembers.length}</p>
+                <p className="text-sm text-gray-500">Team Members</p>
               </div>
             </div>
             <p className="text-sm text-gray-600">{staffMembers.length} staff members</p>
@@ -232,10 +230,10 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
         </div>
 
         {/* Enhanced Tabs */}
-        <div className="bg-white rounded-2xl shadow-xl p-2 mb-8 inline-flex gap-2">
+        <div className="bg-white rounded-2xl shadow-xl p-1.5 sm:p-2 mb-6 sm:mb-8 flex sm:inline-flex gap-1 sm:gap-2 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-2">
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all whitespace-nowrap ${
               activeTab === 'overview'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
@@ -245,38 +243,38 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
           </button>
           <button
             onClick={() => setActiveTab('tours')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all whitespace-nowrap ${
               activeTab === 'tours'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            All Tours ({totalTours})
+            Tours ({totalTours})
           </button>
           <button
             onClick={() => setActiveTab('add-tour')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all flex items-center gap-2 ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
               activeTab === 'add-tour'
                 ? 'bg-green-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            <PlusCircle className="w-4 h-4" />
-            Add Tour Package
+            <PlusCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+            Add Tour
           </button>
           <button
             onClick={() => setActiveTab('staff')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all whitespace-nowrap ${
               activeTab === 'staff'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'
             }`}
           >
-            Staff Management ({staffMembers.length})
+            Staff ({staffMembers.length})
           </button>
           <button
             onClick={() => setActiveTab('analytics')}
-            className={`px-6 py-3 rounded-xl font-semibold transition-all ${
+            className={`px-3 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold text-xs sm:text-sm md:text-base transition-all whitespace-nowrap ${
               activeTab === 'analytics'
                 ? 'bg-blue-600 text-white shadow-lg'
                 : 'text-gray-600 hover:bg-gray-100'

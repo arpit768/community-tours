@@ -1,7 +1,6 @@
 
 export enum UserRole {
   CUSTOMER = 'CUSTOMER',
-  OWNER = 'OWNER',
   STAFF = 'STAFF',
   ADMIN = 'ADMIN',
   GUEST = 'GUEST'
@@ -31,7 +30,7 @@ export interface User {
 
 export interface Tour {
   id: string;
-  ownerId: string;
+  createdBy: string;
   name: string;
   type: TourType;
   pricePerPerson: number;

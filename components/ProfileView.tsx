@@ -10,12 +10,10 @@ interface ProfileViewProps {
 
 export default function ProfileView({ user, bookings, tours }: ProfileViewProps) {
   const myBookings = bookings.filter(b => b.customerId === user.id);
-  const myTours = tours.filter(t => t.ownerId === user.id);
 
   const getRoleBadgeStyle = (role: string) => {
     switch (role) {
       case 'CUSTOMER': return 'bg-emerald-500/10 text-emerald-700 ring-emerald-500/20';
-      case 'OWNER': return 'bg-purple-500/10 text-purple-700 ring-purple-500/20';
       case 'STAFF': return 'bg-amber-500/10 text-amber-700 ring-amber-500/20';
       case 'ADMIN': return 'bg-red-500/10 text-red-700 ring-red-500/20';
       default: return 'bg-gray-500/10 text-gray-700 ring-gray-500/20';
@@ -25,7 +23,6 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
   const getRoleDescription = (role: string) => {
     switch (role) {
       case 'CUSTOMER': return 'Browse and book tour packages for your journeys';
-      case 'OWNER': return 'List and manage your tour packages as an operator';
       case 'STAFF': return 'Verify tour packages and manage platform operations';
       case 'ADMIN': return 'Full platform administration and analytics';
       default: return 'Guest user';
@@ -34,7 +31,6 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
 
   const getRoleLabel = (role: string) => {
     switch (role) {
-      case 'OWNER': return 'Tour Operator';
       case 'CUSTOMER': return 'Traveler';
       default: return role;
     }
@@ -43,7 +39,6 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
   const getHeaderGradient = (role: string) => {
     switch (role) {
       case 'CUSTOMER': return 'from-blue-600 to-indigo-700';
-      case 'OWNER': return 'from-purple-600 to-indigo-700';
       case 'STAFF': return 'from-amber-600 to-orange-700';
       case 'ADMIN': return 'from-gray-800 to-gray-900';
       default: return 'from-blue-600 to-indigo-700';
@@ -52,11 +47,6 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
 
   const completedBookings = myBookings.filter(b => b.status === 'COMPLETED');
   const totalSpent = completedBookings.reduce((sum, b) => sum + b.totalPrice, 0);
-
-  const verifiedTours = myTours.filter(t => t.verificationStatus === VerificationStatus.VERIFIED);
-  const totalEarnings = bookings
-    .filter(b => b.status === 'COMPLETED' && myTours.some(t => t.id === b.tourId))
-    .reduce((sum, b) => sum + b.totalPrice, 0);
 
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
@@ -67,13 +57,13 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
           }} />
         </div>
-        <div className="container mx-auto px-4 py-16 relative z-10">
-          <div className="flex flex-col md:flex-row items-center md:items-end gap-6">
-            <div className="w-28 h-28 bg-white/10 backdrop-blur-sm rounded-3xl flex items-center justify-center border-2 border-white/20 shadow-2xl">
-              <UserIcon className="w-14 h-14 text-white" />
+        <div className="container mx-auto px-4 py-10 sm:py-12 md:py-16 relative z-10">
+          <div className="flex flex-col md:flex-row items-center md:items-end gap-4 sm:gap-6">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 bg-white/10 backdrop-blur-sm rounded-2xl sm:rounded-3xl flex items-center justify-center border-2 border-white/20 shadow-2xl">
+              <UserIcon className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-white" />
             </div>
             <div className="text-center md:text-left flex-1">
-              <h1 className="text-4xl font-bold mb-2">{user.name}</h1>
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">{user.name}</h1>
               <div className="flex flex-col md:flex-row items-center gap-3">
                 <span className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-semibold bg-white/15 text-white border border-white/30">
                   <Shield className="w-3.5 h-3.5" />
@@ -123,7 +113,7 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
               </div>
             </div>
 
-            {/* Badges */}
+            {/* Badge */}
             {user.role === UserRole.CUSTOMER && completedBookings.length >= 5 && (
               <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-5">
                 <div className="flex items-center gap-4">
@@ -137,26 +127,12 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
                 </div>
               </div>
             )}
-
-            {user.role === UserRole.OWNER && verifiedTours.length >= 3 && (
-              <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-200 rounded-2xl p-5">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center shadow-lg">
-                    <Award className="w-6 h-6 text-white" />
-                  </div>
-                  <div>
-                    <p className="font-bold text-gray-900">Top Tour Operator</p>
-                    <p className="text-sm text-gray-600">{verifiedTours.length} verified packages</p>
-                  </div>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Right Column */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Stats Grid */}
-            {(user.role === UserRole.CUSTOMER || user.role === UserRole.OWNER) && (
+            {/* Customer Stats */}
+            {user.role === UserRole.CUSTOMER && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                   <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center mb-3">
@@ -184,34 +160,7 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
               </div>
             )}
 
-            {user.role === UserRole.OWNER && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                  <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center mb-3">
-                    <Compass className="w-5 h-5 text-orange-600" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-medium">Listed Packages</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{myTours.length}</p>
-                </div>
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                  <div className="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center mb-3">
-                    <Shield className="w-5 h-5 text-teal-600" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-medium">Verified</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">{verifiedTours.length}</p>
-                </div>
-                <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
-                  <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center mb-3">
-                    <Award className="w-5 h-5 text-green-600" />
-                  </div>
-                  <p className="text-sm text-gray-500 font-medium">Total Earnings</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {totalEarnings > 0 ? `NPR ${(totalEarnings / 1000).toFixed(0)}K` : 'NPR 0'}
-                  </p>
-                </div>
-              </div>
-            )}
-
+            {/* Staff Stats */}
             {user.role === UserRole.STAFF && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
@@ -244,6 +193,7 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
               </div>
             )}
 
+            {/* Admin Stats */}
             {user.role === UserRole.ADMIN && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white rounded-2xl shadow-lg p-6">
@@ -270,7 +220,7 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
             )}
 
             {/* Recent Bookings */}
-            {(user.role === UserRole.CUSTOMER || user.role === UserRole.OWNER) && myBookings.length > 0 && (
+            {user.role === UserRole.CUSTOMER && myBookings.length > 0 && (
               <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
                 <h3 className="text-lg font-bold text-gray-900 mb-5">Recent Bookings</h3>
                 <div className="space-y-3">

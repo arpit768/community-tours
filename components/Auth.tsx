@@ -114,7 +114,7 @@ export default function Auth({ onLogin }: AuthProps) {
           }} />
         </div>
 
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
+        <div className="relative z-10 flex flex-col justify-center px-8 xl:px-16 text-white">
           <div className="flex items-center gap-3 mb-8">
             <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20">
               <Compass className="w-6 h-6" />
@@ -167,7 +167,7 @@ export default function Auth({ onLogin }: AuthProps) {
           </div>
 
           {/* Decorative elements */}
-          <div className="absolute bottom-12 left-16 right-16">
+          <div className="absolute bottom-12 left-8 right-8 xl:left-16 xl:right-16">
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
               <div className="flex -space-x-3">
                 {['R', 'S', 'A', 'P'].map((letter, i) => (
@@ -292,7 +292,7 @@ export default function Auth({ onLogin }: AuthProps) {
             {!isLogin && (
               <div className="p-4 bg-blue-50 border border-blue-100 rounded-xl">
                 <p className="text-sm text-blue-800">
-                  <span className="font-semibold">Traveler account</span> — you can browse and book tour packages. Tour operators and staff accounts are managed by the admin.
+                  <span className="font-semibold">Traveler account</span> — you can browse and book tour packages. Staff accounts are managed by the admin.
                 </p>
               </div>
             )}
@@ -347,7 +347,6 @@ export default function Auth({ onLogin }: AuthProps) {
                 {[
                   { label: 'Admin', email: 'admin@communitytours.com', password: 'admin123', color: 'from-red-500 to-red-600', icon: 'A' },
                   { label: 'Staff', email: 'staff@communitytours.com', password: 'staff123', color: 'from-amber-500 to-orange-500', icon: 'S' },
-                  { label: 'Tour Operator', email: 'owner@communitytours.com', password: 'owner123', color: 'from-purple-500 to-indigo-500', icon: 'O' },
                   { label: 'Traveler', email: 'customer@communitytours.com', password: 'customer123', color: 'from-blue-500 to-cyan-500', icon: 'T' },
                 ].map((account) => (
                   <button

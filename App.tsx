@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Auth from './components/Auth';
 import LandingPage from './components/LandingPage';
 import CustomerView from './components/CustomerView';
-import OwnerView from './components/OwnerView';
 import StaffView from './components/StaffView';
 import AdminView from './components/AdminView';
 import ProfileView from './components/ProfileView';
@@ -55,14 +54,13 @@ const App: React.FC = () => {
     setShowLogin(false);
   };
 
-  // Simulate creating a booking
   const handleCreateBooking = (booking: Omit<Booking, 'id'>) => {
     const newBooking = {
       ...booking,
       id: Math.random().toString(36).substr(2, 9),
     };
     setBookings(prev => [newBooking, ...prev]);
-    alert("Booking request sent successfully! The tour operator will review it.");
+    alert("Booking request sent successfully!");
   };
 
   const handleAddTour = (tour: Omit<Tour, 'id'>) => {
@@ -74,24 +72,15 @@ const App: React.FC = () => {
     alert("Tour package listed successfully!");
   };
 
-  // Simulate operator approving/rejecting
   const handleUpdateBookingStatus = (bookingId: string, status: 'CONFIRMED' | 'CANCELLED' | 'COMPLETED') => {
     setBookings(prev => prev.map(b =>
       b.id === bookingId ? { ...b, status } : b
     ));
   };
 
-  // Handle tour updates (Verification, Availability)
   const handleUpdateTour = (id: string, updates: Partial<Tour>) => {
     setTours(prev => prev.map(t =>
         t.id === id ? { ...t, ...updates } : t
-    ));
-  };
-
-  // Simulate toggling availability
-  const handleToggleAvailability = (tourId: string) => {
-    setTours(prev => prev.map(t =>
-      t.id === tourId ? { ...t, available: !t.available } : t
     ));
   };
 
@@ -129,18 +118,6 @@ const App: React.FC = () => {
             />
           )}
 
-          {(currentView === 'dashboard' || currentView === 'owner') && user.role === UserRole.OWNER && (
-            <OwnerView
-              user={user}
-              tours={tours}
-              bookings={bookings}
-              onUpdateBookingStatus={handleUpdateBookingStatus}
-              onAddTour={handleAddTour}
-              onToggleAvailability={handleToggleAvailability}
-              onUpdateTour={handleUpdateTour}
-            />
-          )}
-
           {(currentView === 'dashboard' || currentView === 'staff') && user.role === UserRole.STAFF && (
             <StaffView
               user={user}
@@ -165,20 +142,18 @@ const App: React.FC = () => {
         </main>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-          <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <h2 className="text-white font-bold text-xl mb-4">Community Tours and Travels</h2>
-              <p className="text-sm leading-relaxed max-w-xs">
+        <footer className="bg-slate-900 text-slate-400 py-8 sm:py-12 border-t border-slate-800">
+          <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+            <div className="col-span-2 md:col-span-2">
+              <h2 className="text-white font-bold text-lg sm:text-xl mb-3 sm:mb-4">Community Tours and Travels</h2>
+              <p className="text-xs sm:text-sm leading-relaxed max-w-xs">
                 Empowering travelers to explore the Himalayas with unforgettable tour experiences.
-                Connecting tour operators with global adventurers.
               </p>
             </div>
             <div>
               <h3 className="text-white font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-sm">
                 <li><button className="hover:text-white">Browse Tours</button></li>
-                <li><button className="hover:text-white">List Your Tour</button></li>
                 <li><button className="hover:text-white">Travel Insurance</button></li>
               </ul>
             </div>

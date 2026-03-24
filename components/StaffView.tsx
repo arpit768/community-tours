@@ -82,7 +82,7 @@ export default function StaffView({
       image: newTour.image || 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=800',
       available: true,
       verificationStatus: VerificationStatus.VERIFIED,
-      ownerId: user.id,
+      createdBy: user.id,
     });
     setNewTour({
       name: '', type: TourType.ADVENTURE_TREK, location: '', pricePerPerson: '',
@@ -189,8 +189,8 @@ export default function StaffView({
       <div className="bg-gradient-to-r from-orange-800 to-amber-900 text-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl">
-            <h1 className="text-4xl font-bold mb-2">Staff Dashboard</h1>
-            <p className="text-orange-200 text-lg">Welcome, {user.name} — Tour Package Verification Officer</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Staff Dashboard</h1>
+            <p className="text-orange-200 text-sm sm:text-base md:text-lg">Welcome, {user.name} — Verification Officer</p>
           </div>
         </div>
       </div>
@@ -219,10 +219,10 @@ export default function StaffView({
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-4 mb-8 border-b border-gray-200 overflow-x-auto">
+      <div className="flex gap-1 sm:gap-4 mb-6 sm:mb-8 border-b border-gray-200 overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-6 py-3 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 font-semibold text-sm sm:text-base border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'pending'
               ? 'border-yellow-600 text-yellow-600'
               : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -232,7 +232,7 @@ export default function StaffView({
         </button>
         <button
           onClick={() => setActiveTab('verified')}
-          className={`px-6 py-3 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 font-semibold text-sm sm:text-base border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'verified'
               ? 'border-green-600 text-green-600'
               : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -242,7 +242,7 @@ export default function StaffView({
         </button>
         <button
           onClick={() => setActiveTab('rejected')}
-          className={`px-6 py-3 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 font-semibold text-sm sm:text-base border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'rejected'
               ? 'border-red-600 text-red-600'
               : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -252,7 +252,7 @@ export default function StaffView({
         </button>
         <button
           onClick={() => setActiveTab('bookings')}
-          className={`px-6 py-3 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 font-semibold text-sm sm:text-base border-b-2 transition-colors whitespace-nowrap ${
             activeTab === 'bookings'
               ? 'border-blue-600 text-blue-600'
               : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -262,7 +262,7 @@ export default function StaffView({
         </button>
         <button
           onClick={() => setActiveTab('add-tour')}
-          className={`px-6 py-3 font-semibold border-b-2 transition-colors whitespace-nowrap flex items-center gap-2 ${
+          className={`px-3 sm:px-6 py-2.5 sm:py-3 font-semibold text-sm sm:text-base border-b-2 transition-colors whitespace-nowrap flex items-center gap-2 ${
             activeTab === 'add-tour'
               ? 'border-green-600 text-green-600'
               : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -443,8 +443,8 @@ export default function StaffView({
       </div>
       {/* Tour Detail Modal */}
       {selectedTour && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto p-8">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center z-50 p-0 sm:p-4">
+          <div className="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-lg md:max-w-2xl lg:max-w-3xl max-h-[95vh] sm:max-h-[90vh] overflow-y-auto p-4 sm:p-6 md:p-8">
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Tour Package Verification</h2>
               <p className="text-gray-600">Review tour details before approving or rejecting</p>

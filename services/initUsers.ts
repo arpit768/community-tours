@@ -1,5 +1,4 @@
 // Initialize default users for testing
-// Run this once to create admin and staff accounts
 
 import { UserRole } from '../types';
 
@@ -14,7 +13,6 @@ interface StoredUser {
 export function initializeDefaultUsers() {
   const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
 
-  // Only initialize if no users exist
   if (existingUsers.length > 0) {
     return;
   }
@@ -35,13 +33,6 @@ export function initializeDefaultUsers() {
       password: 'staff123',
     },
     {
-      id: 'owner-1',
-      name: 'Sita Sharma',
-      email: 'owner@communitytours.com',
-      role: UserRole.OWNER,
-      password: 'owner123',
-    },
-    {
       id: 'customer-1',
       name: 'Ram Kumar',
       email: 'customer@communitytours.com',
@@ -51,18 +42,13 @@ export function initializeDefaultUsers() {
   ];
 
   localStorage.setItem('users', JSON.stringify(defaultUsers));
-  console.log('✅ Default users initialized:');
-  console.log('Admin: admin@communitytours.com / admin123');
-  console.log('Staff: staff@communitytours.com / staff123');
 }
 
-// Check if we need to seed admin/staff accounts
 export function ensureAdminStaffAccounts() {
   const existingUsers: StoredUser[] = JSON.parse(localStorage.getItem('users') || '[]');
 
   const hasAdmin = existingUsers.some(u => u.role === UserRole.ADMIN);
   const hasStaff = existingUsers.some(u => u.role === UserRole.STAFF);
-  const hasOwner = existingUsers.some(u => u.role === UserRole.OWNER);
   const hasCustomer = existingUsers.some(u => u.role === UserRole.CUSTOMER);
 
   const newUsers: StoredUser[] = [];
@@ -87,16 +73,6 @@ export function ensureAdminStaffAccounts() {
     });
   }
 
-  if (!hasOwner) {
-    newUsers.push({
-      id: 'owner-' + Date.now(),
-      name: 'Sita Sharma',
-      email: 'owner@communitytours.com',
-      role: UserRole.OWNER,
-      password: 'owner123',
-    });
-  }
-
   if (!hasCustomer) {
     newUsers.push({
       id: 'customer-' + Date.now(),
@@ -110,6 +86,5 @@ export function ensureAdminStaffAccounts() {
   if (newUsers.length > 0) {
     const updatedUsers = [...existingUsers, ...newUsers];
     localStorage.setItem('users', JSON.stringify(updatedUsers));
-    console.log('✅ Admin/Staff accounts created');
   }
 }
