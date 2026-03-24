@@ -47,44 +47,46 @@ export function initializeDefaultUsers() {
 export function ensureAdminStaffAccounts() {
   const existingUsers: StoredUser[] = JSON.parse(localStorage.getItem('users') || '[]');
 
-  const hasAdmin = existingUsers.some(u => u.role === UserRole.ADMIN);
-  const hasStaff = existingUsers.some(u => u.role === UserRole.STAFF);
-  const hasCustomer = existingUsers.some(u => u.role === UserRole.CUSTOMER);
-
-  const newUsers: StoredUser[] = [];
-
-  if (!hasAdmin) {
-    newUsers.push({
-      id: 'admin-' + Date.now(),
+  const mockAccounts: StoredUser[] = [
+    {
+      id: 'admin-1',
       name: 'Krishna Admin',
       email: 'admin@communitytours.com',
       role: UserRole.ADMIN,
       password: 'admin123',
-    });
-  }
-
-  if (!hasStaff) {
-    newUsers.push({
-      id: 'staff-' + Date.now(),
+    },
+    {
+      id: 'staff-1',
       name: 'Hari Thapa',
       email: 'staff@communitytours.com',
       role: UserRole.STAFF,
       password: 'staff123',
-    });
-  }
-
-  if (!hasCustomer) {
-    newUsers.push({
-      id: 'customer-' + Date.now(),
+    },
+    {
+      id: 'customer-1',
       name: 'Ram Kumar',
       email: 'customer@communitytours.com',
       role: UserRole.CUSTOMER,
       password: 'customer123',
-    });
+    },
+  ];
+
+  let updated = false;
+
+  for (const mock of mockAccounts) {
+    const idx = existingUsers.findIndex(u => u.email === mock.email);
+    if (idx === -1) {
+      // Account missing — add it
+      existingUsers.push(mock);
+      updated = true;
+    } else if (existingUsers[idx].password !== mock.password || existingUsers[idx].role !== mock.role) {
+      // Account exists but credentials/role are wrong — fix it
+      existingUsers[idx] = { ...existingUsers[idx], password: mock.password, role: mock.role };
+      updated = true;
+    }
   }
 
-  if (newUsers.length > 0) {
-    const updatedUsers = [...existingUsers, ...newUsers];
-    localStorage.setItem('users', JSON.stringify(updatedUsers));
+  if (updated) {
+    localStorage.setItem('users', JSON.stringify(existingUsers));
   }
 }
