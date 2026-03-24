@@ -22,7 +22,7 @@ git commit -m "Initial commit"
 Create a new repo on [github.com](https://github.com/new), then:
 
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/community-tours-and-travels.git
+git remote add origin https://github.com/arpit768/community-tours-and-travels.git
 git push -u origin master
 ```
 
