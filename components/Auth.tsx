@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Lock, User as UserIcon, Compass, ArrowRight, Mountain, Shield, Star } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Compass, ArrowRight, Mountain, Shield, Star, Zap } from 'lucide-react';
 import { UserRole } from '../types';
 import type { User } from '../types';
 
@@ -332,15 +332,52 @@ export default function Auth({ onLogin }: AuthProps) {
             )}
           </div>
 
-          {/* Default Credentials */}
+          {/* Quick Login Buttons */}
           {isLogin && (
-            <div className="mt-8 p-4 bg-gray-100 rounded-xl border border-gray-200">
-              <p className="text-xs font-bold text-gray-700 mb-2.5 uppercase tracking-wide">Test Accounts</p>
-              <div className="space-y-1.5 text-xs text-gray-600">
-                <p><span className="inline-block w-12 font-semibold text-gray-700">Admin</span> admin@communitytours.com / admin123</p>
-                <p><span className="inline-block w-12 font-semibold text-gray-700">Staff</span> staff@communitytours.com / staff123</p>
+            <div className="mt-8">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="h-px flex-1 bg-gray-200" />
+                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                  <Zap className="w-3 h-3" />
+                  Quick Login
+                </span>
+                <div className="h-px flex-1 bg-gray-200" />
               </div>
-              <p className="text-xs text-blue-600 mt-3 font-medium">Or sign up as a Traveler</p>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { label: 'Admin', email: 'admin@communitytours.com', password: 'admin123', color: 'from-red-500 to-red-600', icon: 'A' },
+                  { label: 'Staff', email: 'staff@communitytours.com', password: 'staff123', color: 'from-amber-500 to-orange-500', icon: 'S' },
+                  { label: 'Tour Operator', email: 'owner@communitytours.com', password: 'owner123', color: 'from-purple-500 to-indigo-500', icon: 'O' },
+                  { label: 'Traveler', email: 'customer@communitytours.com', password: 'customer123', color: 'from-blue-500 to-cyan-500', icon: 'T' },
+                ].map((account) => (
+                  <button
+                    key={account.email}
+                    type="button"
+                    onClick={() => {
+                      const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+                      const user = storedUsers.find(
+                        (u: User & { password: string }) =>
+                          u.email === account.email && u.password === account.password
+                      );
+                      if (user) {
+                        const { password, ...userWithoutPassword } = user;
+                        onLogin(userWithoutPassword);
+                      } else {
+                        setErrors({ email: `${account.label} account not found. Refresh the page.` });
+                      }
+                    }}
+                    className="flex items-center gap-3 p-3 bg-white border-2 border-gray-100 rounded-xl hover:border-gray-200 hover:shadow-md transition-all text-left group"
+                  >
+                    <div className={`w-9 h-9 bg-gradient-to-br ${account.color} rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm group-hover:scale-110 transition-transform flex-shrink-0`}>
+                      {account.icon}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 leading-tight">{account.label}</p>
+                      <p className="text-[10px] text-gray-400 truncate">{account.email}</p>
+                    </div>
+                  </button>
+                ))}
+              </div>
             </div>
           )}
         </div>

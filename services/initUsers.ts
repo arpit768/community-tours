@@ -34,6 +34,20 @@ export function initializeDefaultUsers() {
       role: UserRole.STAFF,
       password: 'staff123',
     },
+    {
+      id: 'owner-1',
+      name: 'Sita Sharma',
+      email: 'owner@communitytours.com',
+      role: UserRole.OWNER,
+      password: 'owner123',
+    },
+    {
+      id: 'customer-1',
+      name: 'Ram Kumar',
+      email: 'customer@communitytours.com',
+      role: UserRole.CUSTOMER,
+      password: 'customer123',
+    },
   ];
 
   localStorage.setItem('users', JSON.stringify(defaultUsers));
@@ -48,6 +62,8 @@ export function ensureAdminStaffAccounts() {
 
   const hasAdmin = existingUsers.some(u => u.role === UserRole.ADMIN);
   const hasStaff = existingUsers.some(u => u.role === UserRole.STAFF);
+  const hasOwner = existingUsers.some(u => u.role === UserRole.OWNER);
+  const hasCustomer = existingUsers.some(u => u.role === UserRole.CUSTOMER);
 
   const newUsers: StoredUser[] = [];
 
@@ -68,6 +84,26 @@ export function ensureAdminStaffAccounts() {
       email: 'staff@communitytours.com',
       role: UserRole.STAFF,
       password: 'staff123',
+    });
+  }
+
+  if (!hasOwner) {
+    newUsers.push({
+      id: 'owner-' + Date.now(),
+      name: 'Sita Sharma',
+      email: 'owner@communitytours.com',
+      role: UserRole.OWNER,
+      password: 'owner123',
+    });
+  }
+
+  if (!hasCustomer) {
+    newUsers.push({
+      id: 'customer-' + Date.now(),
+      name: 'Ram Kumar',
+      email: 'customer@communitytours.com',
+      role: UserRole.CUSTOMER,
+      password: 'customer123',
     });
   }
 
