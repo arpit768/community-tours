@@ -6,7 +6,7 @@ import { UserRole } from '../types';
 interface NavbarProps {
   user: UserType | null;
   onLogout: () => void;
-  onViewChange: (view: 'customer' | 'staff' | 'admin' | 'profile' | 'dashboard') => void;
+  onViewChange: (view: string) => void;
   currentView: string;
   notifications: AppNotification[];
   onMarkNotificationsRead: (role: UserRole) => void;
@@ -93,9 +93,8 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
             onClick={() => onViewChange(getDashboardView())}
             className="flex items-center gap-3 group"
           >
-            <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20 group-hover:shadow-blue-600/40 transition-all group-hover:scale-105">
-              <Compass className="w-5 h-5 text-white" />
-            </div>
+            <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-xl object-cover shadow-lg shadow-blue-600/20 group-hover:shadow-blue-600/40 transition-all group-hover:scale-105" />
+
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold text-gray-900 leading-tight">Community Tours</h1>
               <p className="text-[10px] text-gray-400 font-medium tracking-wider uppercase -mt-0.5">Nepal</p>
@@ -199,7 +198,7 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
                     : 'hover:bg-gray-50'
                 }`}
               >
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center text-white text-xs font-bold shadow-sm">
                   {getDisplayName()[0]?.toUpperCase()}
                 </div>
                 <div className="text-left">
@@ -308,7 +307,7 @@ export default function Navbar({ user, onLogout, onViewChange, currentView, noti
                         : 'text-gray-700 hover:bg-gray-50'
                     }`}
                   >
-                    <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white text-xs font-bold">
+                    <div className="w-7 h-7 bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg flex items-center justify-center text-white text-xs font-bold">
                       {getDisplayName()[0]?.toUpperCase()}
                     </div>
                     <div>

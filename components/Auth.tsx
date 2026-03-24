@@ -106,7 +106,7 @@ export default function Auth({ onLogin }: AuthProps) {
   return (
     <div className="min-h-screen flex">
       {/* Left Panel - Hero */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-800 relative overflow-hidden">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
@@ -116,9 +116,7 @@ export default function Auth({ onLogin }: AuthProps) {
 
         <div className="relative z-10 flex flex-col justify-center px-8 xl:px-16 text-white">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20">
-              <Compass className="w-6 h-6" />
-            </div>
+            <img src="/logo.jpeg" alt="Logo" className="w-12 h-12 rounded-2xl object-cover border border-white/20" />
             <div>
               <h2 className="text-xl font-bold">Community Tours</h2>
               <p className="text-blue-200 text-xs">and Travels</p>
@@ -127,7 +125,7 @@ export default function Auth({ onLogin }: AuthProps) {
 
           <h1 className="text-5xl font-bold leading-tight mb-6">
             Discover Nepal's
-            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-warm-300">
               Hidden Treasures
             </span>
           </h1>
@@ -171,7 +169,7 @@ export default function Auth({ onLogin }: AuthProps) {
             <div className="flex items-center gap-3 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4">
               <div className="flex -space-x-3">
                 {['R', 'S', 'A', 'P'].map((letter, i) => (
-                  <div key={i} className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 border-2 border-white/20 flex items-center justify-center text-xs font-bold">
+                  <div key={i} className="w-9 h-9 rounded-full bg-gradient-to-br from-blue-400 to-blue-600 border-2 border-white/20 flex items-center justify-center text-xs font-bold">
                     {letter}
                   </div>
                 ))}
@@ -190,9 +188,8 @@ export default function Auth({ onLogin }: AuthProps) {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-14 h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-2xl mb-4 shadow-lg shadow-blue-600/20">
-              <Compass className="w-7 h-7 text-white" />
-            </div>
+            <img src="/logo.jpeg" alt="Logo" className="w-14 h-14 rounded-2xl object-cover mx-auto mb-4 shadow-lg shadow-blue-600/20" />
+
             <h1 className="text-2xl font-bold text-gray-900">Community Tours and Travels</h1>
             <p className="text-gray-500 mt-1 text-sm">Nepal's Premier Tours & Travel Platform</p>
           </div>
@@ -300,7 +297,7 @@ export default function Auth({ onLogin }: AuthProps) {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3.5 rounded-xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3.5 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all shadow-lg shadow-blue-600/20 hover:shadow-blue-600/30 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -345,9 +342,9 @@ export default function Auth({ onLogin }: AuthProps) {
               </div>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { label: 'Admin', email: 'admin@communitytours.com', password: 'admin123', color: 'from-red-500 to-red-600', icon: 'A' },
-                  { label: 'Staff', email: 'staff@communitytours.com', password: 'staff123', color: 'from-amber-500 to-orange-500', icon: 'S' },
-                  { label: 'Traveler', email: 'customer@communitytours.com', password: 'customer123', color: 'from-blue-500 to-cyan-500', icon: 'T' },
+                  { label: 'Admin', email: 'admin@communitytours.com', password: 'admin123', color: 'from-accent-500 to-accent-600', icon: 'A' },
+                  { label: 'Staff', email: 'staff@communitytours.com', password: 'staff123', color: 'from-warm-400 to-warm-600', icon: 'S' },
+                  { label: 'Traveler', email: 'customer@communitytours.com', password: 'customer123', color: 'from-blue-500 to-blue-700', icon: 'T' },
                 ].map((account) => (
                   <button
                     key={account.email}

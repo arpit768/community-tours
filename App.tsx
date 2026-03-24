@@ -7,6 +7,10 @@ import CustomerView from './components/CustomerView';
 import StaffView from './components/StaffView';
 import AdminView from './components/AdminView';
 import ProfileView from './components/ProfileView';
+import TravelInsurancePage from './components/TravelInsurancePage';
+import HelpCenterPage from './components/HelpCenterPage';
+import EmergencySupportPage from './components/EmergencySupportPage';
+import ContactUsPage from './components/ContactUsPage';
 import { User, UserRole, Tour, Booking, AppNotification } from './types';
 import { MOCK_TOURS, MOCK_BOOKINGS } from './constants';
 import { ensureAdminStaffAccounts } from './services/initUsers';
@@ -139,13 +143,29 @@ const App: React.FC = () => {
               onAddTour={handleAddTour}
             />
           )}
+
+          {currentView === 'travel-insurance' && (
+            <TravelInsurancePage onBack={() => setCurrentView('dashboard')} />
+          )}
+          {currentView === 'help-center' && (
+            <HelpCenterPage onBack={() => setCurrentView('dashboard')} />
+          )}
+          {currentView === 'emergency-support' && (
+            <EmergencySupportPage onBack={() => setCurrentView('dashboard')} />
+          )}
+          {currentView === 'contact-us' && (
+            <ContactUsPage onBack={() => setCurrentView('dashboard')} />
+          )}
         </main>
 
         {/* Footer */}
-        <footer className="bg-slate-900 text-slate-400 py-8 sm:py-12 border-t border-slate-800">
+        <footer className="bg-blue-950 text-blue-200/60 py-8 sm:py-12 border-t border-blue-900">
           <div className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
             <div className="col-span-2 md:col-span-2">
-              <h2 className="text-white font-bold text-lg sm:text-xl mb-3 sm:mb-4">Community Tours and Travels</h2>
+              <div className="flex items-center gap-3 mb-3 sm:mb-4">
+                <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
+                <h2 className="text-white font-bold text-lg sm:text-xl">Community Tours and Travels</h2>
+              </div>
               <p className="text-xs sm:text-sm leading-relaxed max-w-xs">
                 Empowering travelers to explore the Himalayas with unforgettable tour experiences.
               </p>
@@ -153,20 +173,20 @@ const App: React.FC = () => {
             <div>
               <h3 className="text-white font-semibold mb-4">Platform</h3>
               <ul className="space-y-2 text-sm">
-                <li><button className="hover:text-white">Browse Tours</button></li>
-                <li><button className="hover:text-white">Travel Insurance</button></li>
+                <li><button onClick={() => { setCurrentView('dashboard'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">Browse Tours</button></li>
+                <li><button onClick={() => { setCurrentView('travel-insurance'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">Travel Insurance</button></li>
               </ul>
             </div>
             <div>
               <h3 className="text-white font-semibold mb-4">Support</h3>
               <ul className="space-y-2 text-sm">
-                <li><button className="hover:text-white">Help Center</button></li>
-                <li><button className="hover:text-white">Emergency Support</button></li>
-                <li><button className="hover:text-white">Contact Us</button></li>
+                <li><button onClick={() => { setCurrentView('help-center'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">Help Center</button></li>
+                <li><button onClick={() => { setCurrentView('emergency-support'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">Emergency Support</button></li>
+                <li><button onClick={() => { setCurrentView('contact-us'); window.scrollTo(0, 0); }} className="hover:text-white transition-colors">Contact Us</button></li>
               </ul>
             </div>
           </div>
-          <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-slate-800 text-sm text-center">
+          <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-blue-900 text-sm text-center">
             &copy; {new Date().getFullYear()} Community Tours and Travels Pvt. Ltd. Kathmandu.
           </div>
         </footer>

@@ -15,7 +15,7 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
     switch (role) {
       case 'CUSTOMER': return 'bg-emerald-500/10 text-emerald-700 ring-emerald-500/20';
       case 'STAFF': return 'bg-amber-500/10 text-amber-700 ring-amber-500/20';
-      case 'ADMIN': return 'bg-red-500/10 text-red-700 ring-red-500/20';
+      case 'ADMIN': return 'bg-accent-500/10 text-accent-700 ring-accent-500/20';
       default: return 'bg-gray-500/10 text-gray-700 ring-gray-500/20';
     }
   };
@@ -38,10 +38,10 @@ export default function ProfileView({ user, bookings, tours }: ProfileViewProps)
 
   const getHeaderGradient = (role: string) => {
     switch (role) {
-      case 'CUSTOMER': return 'from-blue-600 to-indigo-700';
-      case 'STAFF': return 'from-amber-600 to-orange-700';
-      case 'ADMIN': return 'from-gray-800 to-gray-900';
-      default: return 'from-blue-600 to-indigo-700';
+      case 'CUSTOMER': return 'from-blue-600 to-blue-800';
+      case 'STAFF': return 'from-warm-500 to-warm-700';
+      case 'ADMIN': return 'from-blue-900 to-blue-950';
+      default: return 'from-blue-600 to-blue-800';
     }
   };
 

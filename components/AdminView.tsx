@@ -154,11 +154,11 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Modern Header */}
-      <div className="bg-gradient-to-r from-gray-900 to-gray-800 text-white">
+      <div className="bg-gradient-to-r from-blue-900 to-blue-950 text-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center">
+              <div className="w-12 h-12 bg-accent-500 rounded-xl flex items-center justify-center">
                 <Shield className="w-6 h-6" />
               </div>
               <div>
@@ -675,7 +675,7 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
               {staffMembers.map((staff) => (
                 <div key={staff.id} className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-all">
                   <div className="flex items-start justify-between mb-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white font-bold text-xl">
                       {staff.name[0].toUpperCase()}
                     </div>
                     <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
@@ -722,7 +722,7 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Tour Packages by Location</h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {Object.entries(locationStats).map(([location, count]) => (
-                  <div key={location} className="bg-gradient-to-br from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-100">
+                  <div key={location} className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-100">
                     <MapPin className="w-8 h-8 text-blue-600 mb-3" />
                     <p className="text-3xl font-bold text-gray-900">{count}</p>
                     <p className="text-sm text-gray-600 font-medium">{location}</p>

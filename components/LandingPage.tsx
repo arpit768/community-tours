@@ -23,7 +23,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-700 to-blue-800 text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -39,7 +39,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight">
               Your Journey,
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-cyan-200">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-warm-300">
                 Our Expertise
               </span>
             </h1>
@@ -51,7 +51,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center px-4 sm:px-0">
               <button
                 onClick={onGetStarted}
-                className="w-full sm:w-auto group bg-white text-blue-900 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all shadow-2xl flex items-center justify-center gap-2"
+                className="w-full sm:w-auto group bg-white text-blue-800 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all shadow-2xl flex items-center justify-center gap-2"
               >
                 Start Your Journey
                 <Zap className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -262,7 +262,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
             ].map((location) => (
               <div
                 key={location.name}
-                className="relative bg-gradient-to-br from-blue-600 to-indigo-700 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl text-white cursor-pointer overflow-hidden group hover:shadow-2xl transition-all hover:-translate-y-1 sm:hover:-translate-y-2"
+                className="relative bg-gradient-to-br from-blue-600 to-blue-800 p-4 sm:p-6 md:p-8 rounded-xl sm:rounded-2xl text-white cursor-pointer overflow-hidden group hover:shadow-2xl transition-all hover:-translate-y-1 sm:hover:-translate-y-2"
               >
                 <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition-opacity"></div>
                 <MapPin className="w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 mb-2 sm:mb-4 group-hover:scale-110 transition-transform" />
@@ -288,12 +288,12 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
           </div>
 
           <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10 md:gap-12 relative">
-            <div className="hidden md:block absolute top-16 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-blue-600 via-purple-600 to-orange-600"></div>
+            <div className="hidden md:block absolute top-16 left-1/6 right-1/6 h-0.5 bg-gradient-to-r from-blue-600 via-accent-500 to-warm-500"></div>
 
             {[
-              { num: '1', color: 'from-blue-500 to-blue-600', title: 'Choose Your Tour', desc: 'Browse verified tour packages, compare prices, and read reviews from real travelers' },
-              { num: '2', color: 'from-purple-500 to-purple-600', title: 'Book Instantly', desc: 'Select your dates, number of travelers, add travel insurance and confirm' },
-              { num: '3', color: 'from-orange-500 to-orange-600', title: 'Explore Nepal', desc: 'Meet your expert guide and embark on an unforgettable journey' },
+              { num: '1', color: 'from-blue-500 to-blue-700', title: 'Choose Your Tour', desc: 'Browse verified tour packages, compare prices, and read reviews from real travelers' },
+              { num: '2', color: 'from-accent-400 to-accent-600', title: 'Book Instantly', desc: 'Select your dates, number of travelers, add travel insurance and confirm' },
+              { num: '3', color: 'from-warm-400 to-warm-600', title: 'Explore Nepal', desc: 'Meet your expert guide and embark on an unforgettable journey' },
             ].map((step) => (
               <div key={step.num} className="text-center relative">
                 <div className={`inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br ${step.color} text-white rounded-2xl text-xl sm:text-2xl font-bold mb-4 sm:mb-6 shadow-xl relative z-10`}>
@@ -333,7 +333,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
                 </div>
                 <p className="text-gray-700 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base md:text-lg">"{testimonial.text}"</p>
                 <div className="flex items-center gap-3 sm:gap-4">
-                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base">
                     {testimonial.name[0]}
                   </div>
                   <div>
@@ -348,7 +348,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Final CTA */}
-      <section className="relative py-14 sm:py-20 md:py-24 bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden">
+      <section className="relative py-14 sm:py-20 md:py-24 bg-gradient-to-br from-blue-900 via-blue-700 to-blue-800 text-white overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
@@ -362,7 +362,7 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
           </p>
           <button
             onClick={onGetStarted}
-            className="w-full sm:w-auto group bg-white text-blue-900 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all shadow-2xl inline-flex items-center justify-center gap-2"
+            className="w-full sm:w-auto group bg-white text-blue-800 px-6 sm:px-8 py-3.5 sm:py-4 rounded-xl font-semibold text-base sm:text-lg hover:bg-blue-50 transition-all shadow-2xl inline-flex items-center justify-center gap-2"
           >
             Start Your Journey Today
             <Zap className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -382,15 +382,35 @@ export default function LandingPage({ tours, onGetStarted }: LandingPageProps) {
       </section>
 
       {/* Footer */}
-      <section className="py-6 sm:py-8 bg-gray-900 text-gray-400 text-center">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Compass className="w-4 h-4 sm:w-5 sm:h-5 text-blue-400" />
-            <span className="font-bold text-white text-sm sm:text-base">Community Tours and Travels</span>
+      <section className="py-8 sm:py-12 bg-blue-950 text-blue-200/60">
+        <div className="container mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8">
+          <div className="col-span-2 md:col-span-2">
+            <div className="flex items-center gap-3 mb-3 sm:mb-4">
+              <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
+              <h2 className="text-white font-bold text-lg sm:text-xl">Community Tours and Travels</h2>
+            </div>
+            <p className="text-xs sm:text-sm leading-relaxed max-w-xs">
+              Empowering travelers to explore the Himalayas with unforgettable tour experiences.
+            </p>
           </div>
-          <p className="text-xs sm:text-sm">
-            Your trusted partner for tours & travel across Nepal &copy; 2026
-          </p>
+          <div>
+            <h3 className="text-white font-semibold mb-4">Platform</h3>
+            <ul className="space-y-2 text-sm">
+              <li><button onClick={onGetStarted} className="hover:text-white transition-colors">Browse Tours</button></li>
+              <li><button onClick={onGetStarted} className="hover:text-white transition-colors">Travel Insurance</button></li>
+            </ul>
+          </div>
+          <div>
+            <h3 className="text-white font-semibold mb-4">Support</h3>
+            <ul className="space-y-2 text-sm">
+              <li><button onClick={onGetStarted} className="hover:text-white transition-colors">Help Center</button></li>
+              <li><button onClick={onGetStarted} className="hover:text-white transition-colors">Emergency Support</button></li>
+              <li><button onClick={onGetStarted} className="hover:text-white transition-colors">Contact Us</button></li>
+            </ul>
+          </div>
+        </div>
+        <div className="container mx-auto px-4 mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-blue-900 text-sm text-center">
+          &copy; {new Date().getFullYear()} Community Tours and Travels Pvt. Ltd. Kathmandu.
         </div>
       </section>
     </div>

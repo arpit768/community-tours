@@ -123,7 +123,7 @@ export default function CustomerView({ tours, bookings, user, onCreateBooking }:
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Modern Header */}
-      <div className="bg-gradient-to-r from-blue-900 to-indigo-900 text-white">
+      <div className="bg-gradient-to-r from-blue-800 to-blue-900 text-white">
         <div className="container mx-auto px-4 py-8 sm:py-12">
           <div className="max-w-4xl">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Welcome back, {user.name}!</h1>

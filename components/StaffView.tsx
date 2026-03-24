@@ -186,11 +186,11 @@ export default function StaffView({
   return (
     <div className="min-h-screen bg-gray-50 pb-20">
       {/* Gradient Header */}
-      <div className="bg-gradient-to-r from-orange-800 to-amber-900 text-white">
+      <div className="bg-gradient-to-r from-warm-600 to-warm-800 text-white">
         <div className="container mx-auto px-4 py-12">
           <div className="max-w-4xl">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2">Staff Dashboard</h1>
-            <p className="text-orange-200 text-sm sm:text-base md:text-lg">Welcome, {user.name} — Verification Officer</p>
+            <p className="text-warm-100 text-sm sm:text-base md:text-lg">Welcome, {user.name} — Verification Officer</p>
           </div>
         </div>
       </div>
