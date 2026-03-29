@@ -1,114 +1,60 @@
 const express = require('express');
-const Tour = require('../models/Tour');
-const Notification = require('../models/Notification');
+const { body, param } = require('express-validator');
+const validate = require('../middleware/validate');
 const { authenticateToken, requireRole } = require('../middleware/auth');
+const tourController = require('../controllers/tourController');
 
 const router = express.Router();
 
-// GET /api/tours — public, supports ?location=&type=&available=&status=
-router.get('/', async (req, res) => {
-  try {
-    const filter = {};
-    if (req.query.location) filter.location = req.query.location;
-    if (req.query.type) filter.type = req.query.type;
-    if (req.query.available !== undefined) filter.available = req.query.available === 'true';
-    if (req.query.status) filter.verificationStatus = req.query.status;
+const TOUR_TYPES = ['Adventure Trek', 'Cultural Tour', 'Wildlife Safari', 'Mountain Expedition', 'Pilgrimage', 'City Tour'];
+const DIFFICULTIES = ['Easy', 'Moderate', 'Challenging', 'Extreme'];
 
-    const tours = await Tour.find(filter).sort({ createdAt: -1 });
-    res.json({ tours });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
+router.get('/', tourController.getAllTours);
 
-// GET /api/tours/:id
-router.get('/:id', async (req, res) => {
-  try {
-    const tour = await Tour.findById(req.params.id);
-    if (!tour) return res.status(404).json({ message: 'Tour not found' });
-    res.json({ tour });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
+router.get(
+  '/:id',
+  validate([param('id').isMongoId().withMessage('Invalid tour ID')]),
+  tourController.getTourById
+);
 
-// POST /api/tours — STAFF or ADMIN
-router.post('/', authenticateToken, requireRole('STAFF', 'ADMIN'), async (req, res) => {
-  try {
-    const {
-      name, type, pricePerPerson, location, image, available,
-      features, description, duration, maxGroupSize, difficulty,
-      verificationStatus,
-    } = req.body;
+router.post(
+  '/',
+  authenticateToken,
+  requireRole('STAFF', 'ADMIN'),
+  validate([
+    body('name').trim().notEmpty().withMessage('Tour name is required'),
+    body('type').isIn(TOUR_TYPES).withMessage('Invalid tour type'),
+    body('pricePerPerson').isFloat({ min: 0 }).withMessage('Price must be a positive number'),
+    body('location').trim().notEmpty().withMessage('Location is required'),
+    body('duration').isInt({ min: 1 }).withMessage('Duration must be at least 1 day'),
+    body('maxGroupSize').isInt({ min: 1 }).withMessage('Max group size must be at least 1'),
+    body('difficulty').optional().isIn(DIFFICULTIES).withMessage('Invalid difficulty level'),
+  ]),
+  tourController.createTour
+);
 
-    const tour = await Tour.create({
-      name, type, pricePerPerson, location, image,
-      available: available !== undefined ? available : true,
-      features: features || [],
-      description: description || '',
-      duration, maxGroupSize,
-      difficulty: difficulty || 'Moderate',
-      verificationStatus: verificationStatus || 'PENDING',
-      createdBy: req.user._id,
-    });
+router.patch(
+  '/:id',
+  authenticateToken,
+  requireRole('STAFF', 'ADMIN'),
+  validate([
+    param('id').isMongoId().withMessage('Invalid tour ID'),
+    body('name').optional().trim().notEmpty().withMessage('Tour name cannot be empty'),
+    body('type').optional().isIn(TOUR_TYPES).withMessage('Invalid tour type'),
+    body('pricePerPerson').optional().isFloat({ min: 0 }).withMessage('Price must be a positive number'),
+    body('duration').optional().isInt({ min: 1 }).withMessage('Duration must be at least 1 day'),
+    body('maxGroupSize').optional().isInt({ min: 1 }).withMessage('Max group size must be at least 1'),
+    body('difficulty').optional().isIn(DIFFICULTIES).withMessage('Invalid difficulty level'),
+  ]),
+  tourController.updateTour
+);
 
-    // Notify ADMIN when staff adds a tour
-    if (req.user.role === 'STAFF') {
-      await Notification.create({
-        message: `${req.user.name} (Staff) added a new tour package: "${name}"`,
-        actorName: req.user.name,
-        actorRole: 'STAFF',
-        forRole: 'ADMIN',
-      });
-    }
-
-    res.status(201).json({ tour });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
-
-// PATCH /api/tours/:id — STAFF or ADMIN
-router.patch('/:id', authenticateToken, requireRole('STAFF', 'ADMIN'), async (req, res) => {
-  try {
-    const prevTour = await Tour.findById(req.params.id);
-    if (!prevTour) return res.status(404).json({ message: 'Tour not found' });
-
-    const tour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    // Notify ADMIN when staff verifies/rejects a tour
-    if (
-      req.user.role === 'STAFF' &&
-      req.body.verificationStatus &&
-      req.body.verificationStatus !== prevTour.verificationStatus
-    ) {
-      const action = req.body.verificationStatus === 'VERIFIED' ? 'verified' : 'rejected';
-      await Notification.create({
-        message: `${req.user.name} (Staff) ${action} tour: "${prevTour.name}"`,
-        actorName: req.user.name,
-        actorRole: 'STAFF',
-        forRole: 'ADMIN',
-      });
-    }
-
-    res.json({ tour });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
-
-// DELETE /api/tours/:id — ADMIN only
-router.delete('/:id', authenticateToken, requireRole('ADMIN'), async (req, res) => {
-  try {
-    const tour = await Tour.findByIdAndDelete(req.params.id);
-    if (!tour) return res.status(404).json({ message: 'Tour not found' });
-    res.json({ message: 'Tour deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error', error: err.message });
-  }
-});
+router.delete(
+  '/:id',
+  authenticateToken,
+  requireRole('ADMIN'),
+  validate([param('id').isMongoId().withMessage('Invalid tour ID')]),
+  tourController.deleteTour
+);
 
 module.exports = router;

@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Shield, Compass, Users, DollarSign, TrendingUp, CheckCircle, XCircle, AlertTriangle, UserPlus, Search, MapPin, Calendar, Clock, PlusCircle } from 'lucide-react';
 import { VerificationStatus, UserRole, TourType } from '../types';
 import type { Tour, Booking, User } from '../types';
+import * as api from '../services/api';
 
 interface AdminViewProps {
   tours: Tour[];
@@ -36,13 +37,11 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
     password: ''
   });
 
-  // Get all staff members from localStorage
-  const getAllUsers = (): User[] => {
-    const usersData = localStorage.getItem('users');
-    return usersData ? JSON.parse(usersData) : [];
-  };
+  const [staffMembers, setStaffMembers] = useState<User[]>([]);
 
-  const staffMembers = getAllUsers().filter(u => u.role === UserRole.STAFF || u.role === UserRole.ADMIN);
+  useEffect(() => {
+    api.getUsers('STAFF,ADMIN').then(setStaffMembers).catch(console.error);
+  }, []);
 
   // Statistics
   const totalTours = tours.length;
@@ -122,33 +121,26 @@ export default function AdminView({ tours, bookings, user, onUpdateTour, onAddTo
     setActiveTab('tours');
   };
 
-  const handleAddStaff = () => {
+  const handleAddStaff = async () => {
     if (!newStaff.name || !newStaff.email || !newStaff.password) {
       alert('Please fill all required fields');
       return;
     }
 
-    const users = getAllUsers();
-
-    // Check if email already exists
-    if (users.some(u => u.email === newStaff.email)) {
-      alert('Email already exists');
-      return;
+    try {
+      const staffUser = await api.createStaffUser({
+        name: newStaff.name,
+        email: newStaff.email,
+        password: newStaff.password,
+        phone: newStaff.phone,
+      });
+      setStaffMembers(prev => [...prev, staffUser]);
+      setNewStaff({ name: '', email: '', phone: '', password: '' });
+      setShowAddStaffModal(false);
+      alert('Staff member added successfully!');
+    } catch (err: any) {
+      alert(err.message || 'Failed to add staff member');
     }
-
-    const staffUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: newStaff.name,
-      email: newStaff.email,
-      role: UserRole.STAFF
-    };
-
-    users.push({ ...staffUser, phone: newStaff.phone, password: newStaff.password } as any);
-    localStorage.setItem('users', JSON.stringify(users));
-
-    setNewStaff({ name: '', email: '', phone: '', password: '' });
-    setShowAddStaffModal(false);
-    alert('Staff member added successfully!');
   };
 
   return (

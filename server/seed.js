@@ -1,10 +1,11 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
+const config = require('./config');
 const User = require('./models/User');
 const Tour = require('./models/Tour');
 
 async function seed() {
-  await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/community-tours');
+  await mongoose.connect(config.mongoUri);
   console.log('Connected to MongoDB');
 
   // Clear existing data
