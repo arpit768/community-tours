@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Mail, Lock, User as UserIcon, Compass, ArrowRight, Mountain, Shield, Star, Zap } from 'lucide-react';
+import { Mail, Lock, User as UserIcon, Compass, ArrowRight, Mountain, Shield, Star } from 'lucide-react';
 import { UserRole } from '../types';
 import type { User } from '../types';
 import * as api from '../services/api';
@@ -302,51 +302,6 @@ export default function Auth({ onLogin }: AuthProps) {
             )}
           </div>
 
-          {/* Quick Login Buttons */}
-          {isLogin && (
-            <div className="mt-8">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="h-px flex-1 bg-gray-200" />
-                <span className="text-xs font-bold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <Zap className="w-3 h-3" />
-                  Quick Login
-                </span>
-                <div className="h-px flex-1 bg-gray-200" />
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                {[
-                  { label: 'Admin', email: 'admin@communitytours.com', password: 'admin123', color: 'from-accent-500 to-accent-600', icon: 'A' },
-                  { label: 'Staff', email: 'staff@communitytours.com', password: 'staff123', color: 'from-warm-400 to-warm-600', icon: 'S' },
-                  { label: 'Traveler', email: 'customer@communitytours.com', password: 'customer123', color: 'from-blue-500 to-blue-700', icon: 'T' },
-                ].map((account) => (
-                  <button
-                    key={account.email}
-                    type="button"
-                    onClick={async () => {
-                      setIsLoading(true);
-                      try {
-                        const user = await api.login(account.email, account.password);
-                        onLogin(user);
-                      } catch (err: any) {
-                        setErrors({ email: err.message || `${account.label} login failed` });
-                      } finally {
-                        setIsLoading(false);
-                      }
-                    }}
-                    className="flex items-center gap-3 p-3 bg-white border-2 border-gray-100 rounded-xl hover:border-gray-200 hover:shadow-md transition-all text-left group"
-                  >
-                    <div className={`w-9 h-9 bg-gradient-to-br ${account.color} rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm group-hover:scale-110 transition-transform flex-shrink-0`}>
-                      {account.icon}
-                    </div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 leading-tight">{account.label}</p>
-                      <p className="text-[10px] text-gray-400 truncate">{account.email}</p>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

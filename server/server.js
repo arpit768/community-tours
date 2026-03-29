@@ -10,6 +10,7 @@ const config = require('./config');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const errorHandler = require('./middleware/errorHandler');
 const AppError = require('./utils/AppError');
+const User = require('./models/User');
 
 const authRoutes = require('./routes/auth');
 const tourRoutes = require('./routes/tours');
@@ -21,14 +22,31 @@ const uploadRoutes = require('./routes/upload');
 
 const app = express();
 
-// MongoDB connection
+// MongoDB connection + seed built-in accounts
 mongoose
   .connect(config.mongoUri)
-  .then(() => console.log('MongoDB connected successfully'))
+  .then(async () => {
+    console.log('MongoDB connected successfully');
+    await seedBuiltInAccounts();
+  })
   .catch((err) => {
     console.error('MongoDB connection error:', err.message);
     process.exit(1);
   });
+
+async function seedBuiltInAccounts() {
+  const builtIn = [
+    { name: 'Krishna Admin', email: 'admin@communitytours.com', password: 'admin123', role: 'ADMIN' },
+    { name: 'Hari Thapa', email: 'staff@communitytours.com', password: 'staff123', role: 'STAFF' },
+  ];
+  for (const account of builtIn) {
+    const exists = await User.findOne({ email: account.email });
+    if (!exists) {
+      await User.create(account);
+      console.log(`Created built-in ${account.role} account: ${account.email}`);
+    }
+  }
+}
 
 // Security middleware
 app.use(helmet());
