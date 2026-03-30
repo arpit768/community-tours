@@ -51,7 +51,7 @@ export default function HelpCenterPage({ onBack }: HelpCenterPageProps) {
       color: 'bg-purple-100 text-purple-600',
       items: [
         { q: 'How do I create an account?', a: 'Click "Sign Up" on the login page, enter your name, email, and password. You will be registered as a Traveler. Staff accounts are created by administrators.' },
-        { q: 'I forgot my password. What do I do?', a: 'Please contact our support team at hello@communitytours.com with your registered email to reset your password.' },
+        { q: 'I forgot my password. What do I do?', a: 'Please contact our support team at communitytravelservices@gmail.com with your registered email to reset your password.' },
         { q: 'Can I change my account type?', a: 'Account types (Traveler, Staff, Admin) are managed by administrators. Contact support if you need a role change.' },
         { q: 'How do I update my profile information?', a: 'Visit your profile page from the navigation menu. You can view your account details, booking history, and statistics.' },
       ],
@@ -203,11 +203,11 @@ export default function HelpCenterPage({ onBack }: HelpCenterPageProps) {
           <h2 className="text-xl sm:text-2xl font-bold mb-2">Still need help?</h2>
           <p className="text-blue-100 mb-6 text-sm sm:text-base">Our support team is available 24/7 to assist you</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="mailto:hello@communitytours.com" className="bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-all">
+            <a href="mailto:communitytravelservices@gmail.com" className="bg-white text-blue-700 px-6 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-all">
               Email Support
             </a>
-            <a href="tel:+97714567890" className="bg-white/10 border border-white/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all">
-              Call +977-1-4567890
+            <a href="tel:+97701-4976661" className="bg-white/10 border border-white/30 text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-all">
+              Call +977-01-4976661
             </a>
           </div>
         </div>

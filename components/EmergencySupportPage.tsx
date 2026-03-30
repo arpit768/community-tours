@@ -6,7 +6,7 @@ interface EmergencySupportPageProps {
 
 export default function EmergencySupportPage({ onBack }: EmergencySupportPageProps) {
   const emergencyContacts = [
-    { label: 'Community Tours 24/7 Helpline', number: '+977-1-4567890', desc: 'Our dedicated emergency support team', color: 'from-accent-500 to-accent-600', icon: Phone },
+    { label: 'Community Tours 24/7 Helpline', number: '+977-01-4976661', desc: 'Our dedicated emergency support team', color: 'from-accent-500 to-accent-600', icon: Phone },
     { label: 'Nepal Police', number: '100', desc: 'National emergency police line', color: 'from-blue-600 to-blue-700', icon: Shield },
     { label: 'Tourist Police', number: '+977-1-4247041', desc: 'Dedicated tourist assistance', color: 'from-blue-500 to-blue-600', icon: Shield },
     { label: 'Nepal Ambulance', number: '102', desc: 'Medical emergency ambulance', color: 'from-red-500 to-red-600', icon: Heart },
@@ -26,7 +26,7 @@ export default function EmergencySupportPage({ onBack }: EmergencySupportPagePro
   const emergencySteps = [
     { step: '1', title: 'Stay Calm & Assess', desc: 'Take a moment to assess the situation. Ensure your immediate safety before taking any action.' },
     { step: '2', title: 'Contact Your Guide', desc: 'If you are on a tour, contact your assigned tour guide immediately. They are trained for emergency situations.' },
-    { step: '3', title: 'Call Our Helpline', desc: 'Call our 24/7 helpline at +977-1-4567890. Our team will coordinate rescue and medical support.' },
+    { step: '3', title: 'Call Our Helpline', desc: 'Call our 24/7 helpline at +977-01-4976661. Our team will coordinate rescue and medical support.' },
     { step: '4', title: 'Share Your Location', desc: 'Share your GPS coordinates or describe your location. Use landmarks if GPS is unavailable.' },
     { step: '5', title: 'Follow Instructions', desc: 'Stay where you are unless unsafe. Follow instructions from rescue teams and your tour guide.' },
   ];
@@ -70,9 +70,9 @@ export default function EmergencySupportPage({ onBack }: EmergencySupportPagePro
             <div className="text-center sm:text-left flex-1">
               <h2 className="text-xl sm:text-2xl font-bold mb-1">24/7 Emergency Helpline</h2>
               <p className="text-red-100 text-sm mb-3">For immediate assistance during your tour</p>
-              <a href="tel:+97714567890" className="inline-flex items-center gap-2 bg-white text-accent-600 px-6 py-3 rounded-xl font-bold text-lg hover:bg-red-50 transition-all">
+              <a href="tel:+97701-4976661" className="inline-flex items-center gap-2 bg-white text-accent-600 px-6 py-3 rounded-xl font-bold text-lg hover:bg-red-50 transition-all">
                 <Phone className="w-5 h-5" />
-                +977-1-4567890
+                +977-01-4976661
               </a>
             </div>
           </div>

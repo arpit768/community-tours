@@ -19,9 +19,9 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
   };
 
   const contactInfo = [
-    { icon: MapPin, label: 'Office Address', value: 'Thamel, Kathmandu 44600, Nepal', color: 'bg-blue-100 text-blue-600' },
-    { icon: Phone, label: 'Phone', value: '+977-1-4567890', href: 'tel:+97714567890', color: 'bg-green-100 text-green-600' },
-    { icon: Mail, label: 'Email', value: 'hello@communitytours.com', href: 'mailto:hello@communitytours.com', color: 'bg-purple-100 text-purple-600' },
+    { icon: MapPin, label: 'Office Address', value: 'Thapathali-11, Kathmandu, Nepal (Beside Trade Tower Building)', color: 'bg-blue-100 text-blue-600' },
+    { icon: Phone, label: 'Phone', value: '+977-01-4976661', href: 'tel:+97701-4976661', color: 'bg-green-100 text-green-600' },
+    { icon: Mail, label: 'Email', value: 'communitytravelservices@gmail.com', href: 'mailto:communitytravelservices@gmail.com', color: 'bg-purple-100 text-purple-600' },
     { icon: Clock, label: 'Office Hours', value: 'Sun–Fri: 9:00 AM – 6:00 PM (NPT)', color: 'bg-warm-100 text-warm-600' },
   ];
 
@@ -81,10 +81,10 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
             {/* Map Placeholder */}
             <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
               <div className="bg-gradient-to-br from-blue-100 to-blue-200 h-48 flex items-center justify-center">
-                <div className="text-center">
+                <div className="text-center px-4">
                   <MapPin className="w-10 h-10 text-blue-500 mx-auto mb-2" />
-                  <p className="text-blue-700 font-semibold">Thamel, Kathmandu</p>
-                  <p className="text-blue-600 text-sm">Nepal 44600</p>
+                  <p className="text-blue-700 font-semibold">Thapathali-11, Kathmandu</p>
+                  <p className="text-blue-600 text-sm">Beside Trade Tower Building</p>
                 </div>
               </div>
             </div>
@@ -188,20 +188,22 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
             <div className="text-center p-4 bg-gray-50 rounded-xl">
               <Phone className="w-8 h-8 text-blue-600 mx-auto mb-3" />
               <h3 className="font-bold text-gray-900 mb-1">Call Us</h3>
-              <p className="text-sm text-gray-600">Mon–Fri, 9 AM – 6 PM</p>
-              <a href="tel:+97714567890" className="text-blue-600 font-semibold text-sm mt-1 inline-block">+977-1-4567890</a>
+              <p className="text-sm text-gray-600">Sun–Fri, 9 AM – 6 PM</p>
+              <a href="tel:+97701-4976661" className="text-blue-600 font-semibold text-sm mt-1 block">+977-01-4976661 (Landline)</a>
+              <a href="tel:+9779851416661" className="text-blue-600 font-semibold text-sm mt-0.5 block">+977-9851416661 (Mobile)</a>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-xl">
               <Mail className="w-8 h-8 text-purple-600 mx-auto mb-3" />
               <h3 className="font-bold text-gray-900 mb-1">Email Us</h3>
               <p className="text-sm text-gray-600">Response within 24 hours</p>
-              <a href="mailto:hello@communitytours.com" className="text-blue-600 font-semibold text-sm mt-1 inline-block">hello@communitytours.com</a>
+              <a href="mailto:communitytravelservices@gmail.com" className="text-blue-600 font-semibold text-sm mt-1 inline-block break-all">communitytravelservices@gmail.com</a>
             </div>
             <div className="text-center p-4 bg-gray-50 rounded-xl">
               <MapPin className="w-8 h-8 text-green-600 mx-auto mb-3" />
               <h3 className="font-bold text-gray-900 mb-1">Visit Us</h3>
               <p className="text-sm text-gray-600">Walk-ins welcome</p>
-              <p className="text-blue-600 font-semibold text-sm mt-1">Thamel, Kathmandu</p>
+              <p className="text-blue-600 font-semibold text-sm mt-1">Thapathali-11, Kathmandu</p>
+              <p className="text-gray-500 text-xs mt-0.5">Beside Trade Tower Building</p>
             </div>
           </div>
         </div>
