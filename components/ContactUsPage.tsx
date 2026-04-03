@@ -1,13 +1,45 @@
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, ArrowLeft, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
 
-interface ContactUsPageProps {
-  onBack: () => void;
-}
+const faqs = [
+  {
+    q: 'How do I book a tour with Community Tours and Travels?',
+    a: 'You can book directly through our website by selecting your desired package and filling the inquiry form, or contact us via phone/email. Our team will confirm availability and send you a booking confirmation within 24 hours.',
+  },
+  {
+    q: 'What is included in your tour packages?',
+    a: 'Most packages include accommodation (teahouses or hotels depending on the route), meals (breakfast + dinner on treks), an experienced guide, a porter, all required trekking permits (TIMS, National Park entry), and airport transfers. Flights, personal gear, and travel insurance are not included unless specified.',
+  },
+  {
+    q: 'Do I need travel insurance for trekking in Nepal?',
+    a: 'Yes, we strongly recommend comprehensive travel insurance that covers high-altitude trekking and emergency helicopter evacuation. We can help arrange suitable insurance if needed — just ask our team.',
+  },
+  {
+    q: 'What is your cancellation and refund policy?',
+    a: 'Cancellations made 30+ days before departure receive a full refund minus a 10% administrative fee. 15–29 days: 50% refund. Within 14 days: no refund. We recommend trip cancellation insurance for peace of mind.',
+  },
+  {
+    q: 'What is the best time to trek in Nepal?',
+    a: 'The best trekking seasons are spring (March–May) and autumn (September–November). Both offer stable weather, clear mountain views, and moderate temperatures. Winter treks are possible at lower altitudes; monsoon (June–August) is generally avoided for high-altitude routes.',
+  },
+  {
+    q: 'Are your guides certified and experienced?',
+    a: 'Absolutely. All our guides are government-licensed, certified by the Nepal Tourism Board, and trained in wilderness first aid. Most have 10+ years of experience leading treks in the Himalayan region.',
+  },
+  {
+    q: 'Can you arrange custom or private tours?',
+    a: 'Yes! We specialise in tailored itineraries for individuals, families, and corporate groups. Contact us with your interests, dates, and group size and we\'ll design the perfect Nepal experience for you.',
+  },
+  {
+    q: 'How physically fit do I need to be for trekking?',
+    a: 'It depends on the route. Our Easy-rated tours (Kathmandu, Pokhara, Lumbini) require minimal fitness. Moderate treks like Annapurna need regular exercise and walking stamina. Challenging routes like EBC require serious physical preparation — we recommend starting training 3 months in advance.',
+  },
+];
 
-export default function ContactUsPage({ onBack }: ContactUsPageProps) {
+export default function ContactUsPage() {
   const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,90 +51,79 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
   };
 
   const contactInfo = [
-    { icon: MapPin, label: 'Office Address', value: 'Thapathali-11, Kathmandu, Nepal (Beside Trade Tower Building)', color: 'bg-blue-100 text-blue-600' },
-    { icon: Phone, label: 'Phone', value: '+977-01-4976661', href: 'tel:+97701-4976661', color: 'bg-green-100 text-green-600' },
-    { icon: Mail, label: 'Email', value: 'communitytravelservices@gmail.com', href: 'mailto:communitytravelservices@gmail.com', color: 'bg-purple-100 text-purple-600' },
-    { icon: Clock, label: 'Office Hours', value: 'Sun–Fri: 9:00 AM – 6:00 PM (NPT)', color: 'bg-warm-100 text-warm-600' },
+    { icon: MapPin, label: 'Office Address', value: 'Thapathali-11, Kathmandu, Nepal (Beside Trade Tower Building)', color: 'bg-navy-700 text-white' },
+    { icon: Phone, label: 'Phone / Mobile', value: '+977-01-4976661 | +977-9851416661', href: 'tel:+97701-4976661', color: 'bg-brand-400 text-white' },
+    { icon: Mail, label: 'Email', value: 'communitytravelservices@gmail.com', href: 'mailto:communitytravelservices@gmail.com', color: 'bg-crimson-500 text-white' },
+    { icon: Clock, label: 'Office Hours', value: 'Sun–Fri: 9:00 AM – 6:00 PM (NPT)', color: 'bg-sky-400 text-white' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-gradient-to-br from-blue-700 to-blue-900 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-          }} />
-        </div>
-        <div className="container mx-auto px-4 py-10 sm:py-14 relative z-10">
-          <button
-            onClick={onBack}
-            className="flex items-center gap-2 text-white/70 hover:text-white text-sm font-medium mb-4 transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Dashboard
-          </button>
+      <div className="bg-navy-900 text-white relative overflow-hidden">
+        <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-brand-400" />
+        <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-crimson-500" />
+        <div className="container mx-auto px-4 py-10 sm:py-16">
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center border border-white/20">
-              <MessageSquare className="w-7 h-7" />
+            <div className="w-14 h-14 bg-brand-400/20 border border-brand-400/40 rounded-2xl flex items-center justify-center">
+              <MessageSquare className="w-7 h-7 text-brand-400" />
             </div>
             <div>
-              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold">Contact Us</h1>
-              <p className="text-blue-200 text-sm sm:text-base mt-1">We'd love to hear from you</p>
+              <h1 className="text-2xl sm:text-4xl font-bold">Contact Us</h1>
+              <p className="text-navy-300 text-sm sm:text-base mt-1">We'd love to hear from you — let's plan your Nepal adventure</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container mx-auto px-4 -mt-6">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Contact Info Cards */}
+      {/* Contact Info + Form */}
+      <div className="container mx-auto px-4 py-10 sm:py-14">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-10">
+          {/* Info Cards */}
           <div className="space-y-4">
             {contactInfo.map((item) => (
-              <div key={item.label} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-5 hover:shadow-xl transition-all">
+              <div key={item.label} className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 hover:shadow-lg transition-all">
                 <div className="flex items-start gap-4">
                   <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${item.color}`}>
                     <item.icon className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-500 font-medium">{item.label}</p>
+                    <p className="text-xs text-gray-400 font-semibold uppercase tracking-wider mb-0.5">{item.label}</p>
                     {item.href ? (
-                      <a href={item.href} className="text-gray-900 font-semibold hover:text-blue-600 transition-colors">
-                        {item.value}
-                      </a>
+                      <a href={item.href} className="text-navy-800 font-semibold hover:text-brand-400 transition-colors text-sm">{item.value}</a>
                     ) : (
-                      <p className="text-gray-900 font-semibold">{item.value}</p>
+                      <p className="text-navy-800 font-semibold text-sm">{item.value}</p>
                     )}
                   </div>
                 </div>
               </div>
             ))}
 
-            {/* Map Placeholder */}
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-              <div className="bg-gradient-to-br from-blue-100 to-blue-200 h-48 flex items-center justify-center">
-                <div className="text-center px-4">
-                  <MapPin className="w-10 h-10 text-blue-500 mx-auto mb-2" />
-                  <p className="text-blue-700 font-semibold">Thapathali-11, Kathmandu</p>
-                  <p className="text-blue-600 text-sm">Beside Trade Tower Building</p>
-                </div>
+            <div className="bg-navy-700 rounded-2xl p-6 text-white">
+              <h3 className="font-bold mb-3 text-brand-400">Also Reach Us At</h3>
+              <div className="space-y-2 text-sm text-navy-200">
+                {['+977-9868006661', '+977-9802006661', '+977-9705006661', '+977-9705006662'].map((num) => (
+                  <a key={num} href={`tel:${num.replace(/-/g,'')}`} className="flex items-center gap-2 hover:text-white transition-colors">
+                    <Phone className="w-3.5 h-3.5 text-brand-400 flex-shrink-0" /> {num}
+                  </a>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Form */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
+            <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 sm:p-8">
               {submitted ? (
-                <div className="text-center py-12">
-                  <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <CheckCircle className="w-8 h-8 text-green-600" />
+                <div className="text-center py-14">
+                  <div className="w-16 h-16 bg-brand-400/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <CheckCircle className="w-8 h-8 text-brand-400" />
                   </div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h2>
-                  <p className="text-gray-600 mb-6">Thank you for reaching out. Our team will respond within 24 hours.</p>
+                  <h2 className="text-2xl font-bold text-navy-800 mb-2">Message Sent!</h2>
+                  <p className="text-gray-500 mb-6">Thank you for reaching out. Our team will respond within 24 hours.</p>
                   <button
                     onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }}
-                    className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all"
+                    className="bg-brand-400 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-500 transition-all"
                   >
                     Send Another Message
                   </button>
@@ -110,44 +131,45 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
               ) : (
                 <>
                   <div className="mb-6">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Send us a Message</h2>
-                    <p className="text-gray-500 text-sm mt-1">Fill out the form and we'll get back to you within 24 hours</p>
+                    <h2 className="text-xl sm:text-2xl font-bold text-navy-800">Send us a Message</h2>
+                    <p className="text-gray-400 text-sm mt-1">We'll get back to you within 24 hours</p>
                   </div>
 
                   <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Your Name *</label>
+                        <label className="block text-sm font-semibold text-navy-700 mb-2">Your Name *</label>
                         <input
                           type="text"
                           value={form.name}
                           onChange={(e) => setForm({ ...form, name: e.target.value })}
                           placeholder="Enter your full name"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address *</label>
+                        <label className="block text-sm font-semibold text-navy-700 mb-2">Email Address *</label>
                         <input
                           type="email"
                           value={form.email}
                           onChange={(e) => setForm({ ...form, email: e.target.value })}
                           placeholder="your@email.com"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors"
                         />
                       </div>
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Subject *</label>
+                      <label className="block text-sm font-semibold text-navy-700 mb-2">Subject *</label>
                       <select
                         value={form.subject}
                         onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors appearance-none bg-white"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white"
                       >
                         <option value="">Select a topic</option>
                         <option value="booking">Booking Inquiry</option>
                         <option value="tour">Tour Information</option>
+                        <option value="custom">Custom Itinerary</option>
                         <option value="payment">Payment Issue</option>
                         <option value="cancellation">Cancellation Request</option>
                         <option value="feedback">Feedback</option>
@@ -157,19 +179,19 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">Message *</label>
+                      <label className="block text-sm font-semibold text-navy-700 mb-2">Message *</label>
                       <textarea
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
                         rows={5}
                         placeholder="Tell us how we can help you..."
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 transition-colors resize-none"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors resize-none"
                       />
                     </div>
 
                     <button
                       type="submit"
-                      className="w-full sm:w-auto bg-blue-600 text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                      className="bg-brand-400 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-brand-500 transition-all shadow-lg flex items-center gap-2"
                     >
                       <Send className="w-4 h-4" />
                       Send Message
@@ -180,31 +202,55 @@ export default function ContactUsPage({ onBack }: ContactUsPageProps) {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Social / Additional */}
-        <div className="mt-8 bg-white rounded-2xl shadow-lg border border-gray-100 p-6 sm:p-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Other Ways to Reach Us</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <Phone className="w-8 h-8 text-blue-600 mx-auto mb-3" />
-              <h3 className="font-bold text-gray-900 mb-1">Call Us</h3>
-              <p className="text-sm text-gray-600">Sun–Fri, 9 AM – 6 PM</p>
-              <a href="tel:+97701-4976661" className="text-blue-600 font-semibold text-sm mt-1 block">+977-01-4976661 (Landline)</a>
-              <a href="tel:+9779851416661" className="text-blue-600 font-semibold text-sm mt-0.5 block">+977-9851416661 (Mobile)</a>
+      {/* FAQ Section */}
+      <div className="bg-white py-14 sm:py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 bg-brand-400/10 text-brand-500 px-4 py-2 rounded-full mb-4 font-semibold text-sm border border-brand-400/20">
+              Frequently Asked Questions
             </div>
-            <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <Mail className="w-8 h-8 text-purple-600 mx-auto mb-3" />
-              <h3 className="font-bold text-gray-900 mb-1">Email Us</h3>
-              <p className="text-sm text-gray-600">Response within 24 hours</p>
-              <a href="mailto:communitytravelservices@gmail.com" className="text-blue-600 font-semibold text-sm mt-1 inline-block break-all">communitytravelservices@gmail.com</a>
-            </div>
-            <div className="text-center p-4 bg-gray-50 rounded-xl">
-              <MapPin className="w-8 h-8 text-green-600 mx-auto mb-3" />
-              <h3 className="font-bold text-gray-900 mb-1">Visit Us</h3>
-              <p className="text-sm text-gray-600">Walk-ins welcome</p>
-              <p className="text-blue-600 font-semibold text-sm mt-1">Thapathali-11, Kathmandu</p>
-              <p className="text-gray-500 text-xs mt-0.5">Beside Trade Tower Building</p>
-            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-navy-800 mb-3">Got Questions? We've Got Answers.</h2>
+            <p className="text-gray-500 text-base sm:text-lg max-w-2xl mx-auto">
+              Everything you need to know before booking your Nepal adventure.
+            </p>
+          </div>
+
+          <div className="max-w-3xl mx-auto space-y-3">
+            {faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden hover:border-navy-200 transition-colors"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
+                >
+                  <span className="font-semibold text-navy-800 text-sm sm:text-base">{faq.q}</span>
+                  <span className="flex-shrink-0">
+                    {openFaq === idx
+                      ? <ChevronUp className="w-5 h-5 text-brand-400" />
+                      : <ChevronDown className="w-5 h-5 text-gray-400" />}
+                  </span>
+                </button>
+                {openFaq === idx && (
+                  <div className="px-6 pb-5 border-t border-gray-100">
+                    <p className="text-gray-600 leading-relaxed text-sm sm:text-base pt-4">{faq.a}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <p className="text-gray-500 text-sm mb-4">Still have questions? We're happy to help.</p>
+            <a
+              href="mailto:communitytravelservices@gmail.com"
+              className="inline-flex items-center gap-2 bg-navy-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-navy-800 transition-all shadow-md"
+            >
+              <Mail className="w-4 h-4" /> Email Us Directly
+            </a>
           </div>
         </div>
       </div>
