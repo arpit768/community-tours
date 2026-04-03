@@ -1,4 +1,7 @@
+import { useState, useEffect } from 'react';
 import { Compass, Shield, MapPin, Clock, CheckCircle, Star, Award, Users, Zap, TrendingUp, Phone, Mail, Quote } from 'lucide-react';
+import { store } from '../store';
+import type { Testimonial } from '../store';
 
 interface LandingPageProps {
   onNavigate: (view: string) => void;
@@ -46,64 +49,13 @@ const staticTours = [
   },
 ];
 
-const testimonials = [
-  {
-    name: 'Sarah Johnson',
-    country: 'United Kingdom',
-    tour: 'Everest Base Camp Trek',
-    text: 'Absolutely life-changing! The guides were incredibly knowledgeable and caring. Community Tours handled every detail perfectly — I never felt unsafe even at high altitude. I\'ll be back for Annapurna next year!',
-    rating: 5,
-    avatar: 'S',
-    color: 'bg-brand-400',
-  },
-  {
-    name: 'Rajesh Sharma',
-    country: 'India',
-    tour: 'Kathmandu Cultural Tour',
-    text: 'The Kathmandu heritage tour exceeded all expectations. Our guide Sunita knew every story behind every temple. Booking was smooth and the team was responsive to every question. Highly recommended!',
-    rating: 5,
-    avatar: 'R',
-    color: 'bg-sky-400',
-  },
-  {
-    name: 'Emma Wilson',
-    country: 'Australia',
-    tour: 'Annapurna Circuit',
-    text: 'As a solo female traveller I was nervous, but Community Tours made me feel completely safe and included. The teahouses, the scenery, the entire experience was beyond words. Thank you!',
-    rating: 5,
-    avatar: 'E',
-    color: 'bg-crimson-500',
-  },
-  {
-    name: 'Hiroshi Tanaka',
-    country: 'Japan',
-    tour: 'Chitwan Wildlife Safari',
-    text: 'Saw rhinos, crocodiles, and even a tiger on our jeep safari! The naturalist guide was exceptional. Perfect organisation from start to finish. Will definitely recommend to friends.',
-    rating: 5,
-    avatar: 'H',
-    color: 'bg-navy-700',
-  },
-  {
-    name: 'Maria Garcia',
-    country: 'Spain',
-    tour: 'Langtang Valley Trek',
-    text: 'The Langtang valley is a hidden gem and Community Tours showed us its best side. Small group, great pace, stunning views and wonderful local food. A perfect week in the mountains.',
-    rating: 5,
-    avatar: 'M',
-    color: 'bg-brand-400',
-  },
-  {
-    name: 'David Chen',
-    country: 'Canada',
-    tour: 'Lumbini Pilgrimage',
-    text: 'A deeply moving and spiritual experience. The guide\'s knowledge of Buddhist history made every site come alive. Flawless logistics and genuine hospitality throughout.',
-    rating: 5,
-    avatar: 'D',
-    color: 'bg-sky-400',
-  },
-];
-
 export default function LandingPage({ onNavigate }: LandingPageProps) {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    setTestimonials(store.getTestimonials());
+  }, []);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero */}

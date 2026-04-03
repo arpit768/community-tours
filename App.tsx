@@ -1,27 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import ServicesPage from './components/ServicesPage';
 import PackagesPage from './components/PackagesPage';
 import AboutPage from './components/AboutPage';
 import ContactUsPage from './components/ContactUsPage';
+import BookNowPage from './components/BookNowPage';
+import AdminPage from './components/AdminPage';
+
+const VIEWS = ['services', 'packages', 'about', 'contact', 'book', 'admin'];
+
+function pathToView(pathname: string): string {
+  const seg = pathname.replace(/^\//, '').toLowerCase();
+  return VIEWS.includes(seg) ? seg : 'home';
+}
 
 const App: React.FC = () => {
-  const [currentView, setCurrentView] = useState('home');
+  const [currentView, setCurrentView] = useState(() => pathToView(window.location.pathname));
+
+  const navigate = (view: string) => {
+    const path = view === 'home' ? '/' : `/${view}`;
+    window.history.pushState({}, '', path);
+    setCurrentView(view);
+    window.scrollTo(0, 0);
+  };
+
+  // Handle browser back / forward
+  useEffect(() => {
+    const onPop = () => setCurrentView(pathToView(window.location.pathname));
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   const renderContent = () => {
     switch (currentView) {
-      case 'services': return <ServicesPage />;
-      case 'packages': return <PackagesPage />;
-      case 'about': return <AboutPage />;
-      case 'contact': return <ContactUsPage />;
-      default: return <LandingPage onNavigate={setCurrentView} />;
+      case 'services':  return <ServicesPage />;
+      case 'packages':  return <PackagesPage />;
+      case 'about':     return <AboutPage />;
+      case 'contact':   return <ContactUsPage />;
+      case 'book':      return <BookNowPage />;
+      case 'admin':     return <AdminPage />;
+      default:          return <LandingPage onNavigate={navigate} />;
     }
   };
 
+  // Admin gets its own minimal shell
+  if (currentView === 'admin') {
+    return (
+      <div>
+        {renderContent()}
+        <div className="bg-gray-100 text-center py-3 text-xs text-gray-400">
+          <button onClick={() => navigate('home')} className="hover:text-navy-700 transition-colors">
+            ← Back to website
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Navbar currentView={currentView} onViewChange={setCurrentView} />
+      <Navbar currentView={currentView} onViewChange={navigate} />
       {renderContent()}
 
       {/* Footer */}
@@ -42,11 +81,9 @@ const App: React.FC = () => {
           <div>
             <h3 className="font-bold mb-4 text-brand-400 uppercase text-xs tracking-wider">Pages</h3>
             <ul className="space-y-2 text-sm text-navy-200">
-              {[['Home','home'],['Services','services'],['Packages','packages'],['About','about'],['Contact','contact']].map(([label, view]) => (
+              {[['Home','home'],['Services','services'],['Packages','packages'],['About','about'],['Contact','contact'],['Book Now','book']].map(([label, view]) => (
                 <li key={view}>
-                  <button onClick={() => { setCurrentView(view); window.scrollTo(0,0); }} className="hover:text-white transition-colors">
-                    {label}
-                  </button>
+                  <button onClick={() => navigate(view)} className="hover:text-white transition-colors">{label}</button>
                 </li>
               ))}
             </ul>
@@ -61,9 +98,8 @@ const App: React.FC = () => {
             </ul>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 py-4 border-t border-navy-800 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-navy-400">
-          <span>&copy; {new Date().getFullYear()} Community Tours and Travels Pvt. Ltd. Kathmandu, Nepal.</span>
-          <span>Sun–Fri: 9:00 AM – 6:00 PM NPT</span>
+        <div className="max-w-7xl mx-auto px-4 py-4 border-t border-navy-800 text-center text-xs text-navy-400">
+          &copy; {new Date().getFullYear()} Community Tours and Travels Pvt. Ltd. Kathmandu, Nepal. &nbsp;|&nbsp; Sun–Fri: 9:00 AM – 6:00 PM NPT
         </div>
       </footer>
     </div>

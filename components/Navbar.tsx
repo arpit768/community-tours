@@ -11,7 +11,6 @@ const navLinks = [
   { label: 'Services', view: 'services' },
   { label: 'Packages', view: 'packages' },
   { label: 'About', view: 'about' },
-  { label: 'Contact', view: 'contact' },
 ];
 
 export default function Navbar({ currentView, onViewChange }: NavbarProps) {
@@ -56,7 +55,7 @@ export default function Navbar({ currentView, onViewChange }: NavbarProps) {
               </button>
             ))}
             <button
-              onClick={() => handleNav('contact')}
+              onClick={() => handleNav('book')}
               className="ml-3 bg-brand-400 text-white px-5 py-2 rounded-lg text-sm font-bold hover:bg-brand-500 transition-all shadow-md"
             >
               Book Now
@@ -90,7 +89,7 @@ export default function Navbar({ currentView, onViewChange }: NavbarProps) {
                 </button>
               ))}
               <button
-                onClick={() => handleNav('contact')}
+                onClick={() => handleNav('book')}
                 className="mt-1 mx-1 bg-brand-400 text-white px-4 py-3 rounded-xl text-sm font-bold hover:bg-brand-500 transition-all"
               >
                 Book Now

@@ -1,52 +1,38 @@
-import { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, ChevronDown, ChevronUp } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, ChevronDown, ChevronUp, Compass } from 'lucide-react';
+import { store } from '../store';
+import type { Package, Destination } from '../store';
 
 const faqs = [
-  {
-    q: 'How do I book a tour with Community Tours and Travels?',
-    a: 'You can book directly through our website by selecting your desired package and filling the inquiry form, or contact us via phone/email. Our team will confirm availability and send you a booking confirmation within 24 hours.',
-  },
-  {
-    q: 'What is included in your tour packages?',
-    a: 'Most packages include accommodation (teahouses or hotels depending on the route), meals (breakfast + dinner on treks), an experienced guide, a porter, all required trekking permits (TIMS, National Park entry), and airport transfers. Flights, personal gear, and travel insurance are not included unless specified.',
-  },
-  {
-    q: 'Do I need travel insurance for trekking in Nepal?',
-    a: 'Yes, we strongly recommend comprehensive travel insurance that covers high-altitude trekking and emergency helicopter evacuation. We can help arrange suitable insurance if needed — just ask our team.',
-  },
-  {
-    q: 'What is your cancellation and refund policy?',
-    a: 'Cancellations made 30+ days before departure receive a full refund minus a 10% administrative fee. 15–29 days: 50% refund. Within 14 days: no refund. We recommend trip cancellation insurance for peace of mind.',
-  },
-  {
-    q: 'What is the best time to trek in Nepal?',
-    a: 'The best trekking seasons are spring (March–May) and autumn (September–November). Both offer stable weather, clear mountain views, and moderate temperatures. Winter treks are possible at lower altitudes; monsoon (June–August) is generally avoided for high-altitude routes.',
-  },
-  {
-    q: 'Are your guides certified and experienced?',
-    a: 'Absolutely. All our guides are government-licensed, certified by the Nepal Tourism Board, and trained in wilderness first aid. Most have 10+ years of experience leading treks in the Himalayan region.',
-  },
-  {
-    q: 'Can you arrange custom or private tours?',
-    a: 'Yes! We specialise in tailored itineraries for individuals, families, and corporate groups. Contact us with your interests, dates, and group size and we\'ll design the perfect Nepal experience for you.',
-  },
-  {
-    q: 'How physically fit do I need to be for trekking?',
-    a: 'It depends on the route. Our Easy-rated tours (Kathmandu, Pokhara, Lumbini) require minimal fitness. Moderate treks like Annapurna need regular exercise and walking stamina. Challenging routes like EBC require serious physical preparation — we recommend starting training 3 months in advance.',
-  },
+  { q: 'How do I book a tour with Community Tours and Travels?', a: 'You can book directly through our website by selecting your desired package and filling the inquiry form, or contact us via phone/email. Our team will confirm availability and send you a booking confirmation within 24 hours.' },
+  { q: 'What is included in your tour packages?', a: 'Most packages include accommodation (teahouses or hotels depending on the route), meals (breakfast + dinner on treks), an experienced guide, a porter, all required trekking permits, and airport transfers. Flights, personal gear, and travel insurance are not included unless specified.' },
+  { q: 'Do I need travel insurance for trekking in Nepal?', a: 'Yes, we strongly recommend comprehensive travel insurance that covers high-altitude trekking and emergency helicopter evacuation. We can help arrange suitable insurance if needed.' },
+  { q: 'What is your cancellation and refund policy?', a: 'Cancellations made 30+ days before departure receive a full refund minus a 10% administrative fee. 15–29 days: 50% refund. Within 14 days: no refund. We recommend trip cancellation insurance for peace of mind.' },
+  { q: 'What is the best time to trek in Nepal?', a: 'The best trekking seasons are spring (March–May) and autumn (September–November). Both offer stable weather, clear mountain views, and moderate temperatures. Winter treks are possible at lower altitudes.' },
+  { q: 'Are your guides certified and experienced?', a: 'All our guides are government-licensed, certified by the Nepal Tourism Board, and trained in wilderness first aid. Most have 10+ years of experience leading treks in the Himalayan region.' },
+  { q: 'Can you arrange custom or private tours?', a: "Yes! We specialise in tailored itineraries for individuals, families, and corporate groups. Contact us with your interests, dates, and group size and we'll design the perfect Nepal experience for you." },
+  { q: 'How physically fit do I need to be for trekking?', a: 'Easy-rated tours require minimal fitness. Moderate treks need regular walking stamina. Challenging routes like EBC require serious preparation — we recommend starting training 3 months in advance.' },
 ];
 
 export default function ContactUsPage() {
-  const [form, setForm] = useState({ name: '', email: '', subject: '', message: '' });
+  const [packages, setPackages] = useState<Package[]>([]);
+  const [destinations, setDestinations] = useState<Destination[]>([]);
+  const [form, setForm] = useState({ name: '', email: '', subject: '', package: '', destination: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    setPackages(store.getPackages());
+    setDestinations(store.getDestinations());
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name || !form.email || !form.subject || !form.message) {
-      alert('Please fill in all fields');
+      alert('Please fill in all required fields');
       return;
     }
+    store.addInquiry({ type: 'contact', ...form });
     setSubmitted(true);
   };
 
@@ -100,10 +86,10 @@ export default function ContactUsPage() {
             ))}
 
             <div className="bg-navy-700 rounded-2xl p-6 text-white">
-              <h3 className="font-bold mb-3 text-brand-400">Also Reach Us At</h3>
-              <div className="space-y-2 text-sm text-navy-200">
-                {['+977-9868006661', '+977-9802006661', '+977-9705006661', '+977-9705006662'].map((num) => (
-                  <a key={num} href={`tel:${num.replace(/-/g,'')}`} className="flex items-center gap-2 hover:text-white transition-colors">
+              <h3 className="font-bold text-brand-400 mb-3 text-sm">More Numbers</h3>
+              <div className="space-y-2">
+                {['+977-9868006661', '+977-9802006661', '+977-9705006661', '+977-9705006662'].map(num => (
+                  <a key={num} href={`tel:${num.replace(/-/g,'')}`} className="flex items-center gap-2 text-sm text-navy-200 hover:text-white transition-colors">
                     <Phone className="w-3.5 h-3.5 text-brand-400 flex-shrink-0" /> {num}
                   </a>
                 ))}
@@ -121,10 +107,8 @@ export default function ContactUsPage() {
                   </div>
                   <h2 className="text-2xl font-bold text-navy-800 mb-2">Message Sent!</h2>
                   <p className="text-gray-500 mb-6">Thank you for reaching out. Our team will respond within 24 hours.</p>
-                  <button
-                    onClick={() => { setSubmitted(false); setForm({ name: '', email: '', subject: '', message: '' }); }}
-                    className="bg-brand-400 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-500 transition-all"
-                  >
+                  <button onClick={() => { setSubmitted(false); setForm({ name:'',email:'',subject:'',package:'',destination:'',message:'' }); }}
+                    className="bg-brand-400 text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-500 transition-all">
                     Send Another Message
                   </button>
                 </div>
@@ -139,62 +123,67 @@ export default function ContactUsPage() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <div>
                         <label className="block text-sm font-semibold text-navy-700 mb-2">Your Name *</label>
-                        <input
-                          type="text"
-                          value={form.name}
-                          onChange={(e) => setForm({ ...form, name: e.target.value })}
-                          placeholder="Enter your full name"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors"
-                        />
+                        <input type="text" value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Your full name"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors" />
                       </div>
                       <div>
                         <label className="block text-sm font-semibold text-navy-700 mb-2">Email Address *</label>
-                        <input
-                          type="email"
-                          value={form.email}
-                          onChange={(e) => setForm({ ...form, email: e.target.value })}
-                          placeholder="your@email.com"
-                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors"
-                        />
+                        <input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="your@email.com"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors" />
+                      </div>
+                    </div>
+
+                    {/* Package & Destination dropdowns */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                      <div>
+                        <label className="block text-sm font-semibold text-navy-700 mb-2 flex items-center gap-1.5">
+                          <Compass className="w-4 h-4 text-brand-400" /> Interested Package
+                        </label>
+                        <select value={form.package} onChange={e => setForm({...form, package: e.target.value})}
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white">
+                          <option value="">-- Select a package --</option>
+                          {packages.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
+                          <option value="Not sure yet">Not sure yet</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-semibold text-navy-700 mb-2 flex items-center gap-1.5">
+                          <MapPin className="w-4 h-4 text-crimson-500" /> Preferred Destination
+                        </label>
+                        <select value={form.destination} onChange={e => setForm({...form, destination: e.target.value})}
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white">
+                          <option value="">-- Select destination --</option>
+                          {destinations.map(d => <option key={d.id} value={d.name}>{d.name} — {d.region}</option>)}
+                          <option value="Multiple / Flexible">Multiple / Flexible</option>
+                        </select>
                       </div>
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-navy-700 mb-2">Subject *</label>
-                      <select
-                        value={form.subject}
-                        onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white"
-                      >
+                      <select value={form.subject} onChange={e => setForm({...form, subject: e.target.value})}
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white">
                         <option value="">Select a topic</option>
-                        <option value="booking">Booking Inquiry</option>
-                        <option value="tour">Tour Information</option>
-                        <option value="custom">Custom Itinerary</option>
-                        <option value="payment">Payment Issue</option>
-                        <option value="cancellation">Cancellation Request</option>
-                        <option value="feedback">Feedback</option>
-                        <option value="partnership">Business Partnership</option>
-                        <option value="other">Other</option>
+                        <option value="Booking Inquiry">Booking Inquiry</option>
+                        <option value="Tour Information">Tour Information</option>
+                        <option value="Custom Itinerary">Custom Itinerary</option>
+                        <option value="Payment Issue">Payment Issue</option>
+                        <option value="Cancellation Request">Cancellation Request</option>
+                        <option value="Feedback">Feedback</option>
+                        <option value="Business Partnership">Business Partnership</option>
+                        <option value="Other">Other</option>
                       </select>
                     </div>
 
                     <div>
                       <label className="block text-sm font-semibold text-navy-700 mb-2">Message *</label>
-                      <textarea
-                        value={form.message}
-                        onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        rows={5}
+                      <textarea value={form.message} onChange={e => setForm({...form, message: e.target.value})} rows={5}
                         placeholder="Tell us how we can help you..."
-                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors resize-none"
-                      />
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors resize-none" />
                     </div>
 
-                    <button
-                      type="submit"
-                      className="bg-brand-400 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-brand-500 transition-all shadow-lg flex items-center gap-2"
-                    >
-                      <Send className="w-4 h-4" />
-                      Send Message
+                    <button type="submit" className="bg-brand-400 text-white px-8 py-3.5 rounded-xl font-bold hover:bg-brand-500 transition-all shadow-lg flex items-center gap-2">
+                      <Send className="w-4 h-4" /> Send Message
                     </button>
                   </form>
                 </>
@@ -219,20 +208,11 @@ export default function ContactUsPage() {
 
           <div className="max-w-3xl mx-auto space-y-3">
             {faqs.map((faq, idx) => (
-              <div
-                key={idx}
-                className="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden hover:border-navy-200 transition-colors"
-              >
-                <button
-                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center justify-between px-6 py-5 text-left gap-4"
-                >
+              <div key={idx} className="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden hover:border-navy-200 transition-colors">
+                <button onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left gap-4">
                   <span className="font-semibold text-navy-800 text-sm sm:text-base">{faq.q}</span>
-                  <span className="flex-shrink-0">
-                    {openFaq === idx
-                      ? <ChevronUp className="w-5 h-5 text-brand-400" />
-                      : <ChevronDown className="w-5 h-5 text-gray-400" />}
-                  </span>
+                  {openFaq === idx ? <ChevronUp className="w-5 h-5 text-brand-400 flex-shrink-0" /> : <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />}
                 </button>
                 {openFaq === idx && (
                   <div className="px-6 pb-5 border-t border-gray-100">
@@ -244,11 +224,9 @@ export default function ContactUsPage() {
           </div>
 
           <div className="text-center mt-10">
-            <p className="text-gray-500 text-sm mb-4">Still have questions? We're happy to help.</p>
-            <a
-              href="mailto:communitytravelservices@gmail.com"
-              className="inline-flex items-center gap-2 bg-navy-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-navy-800 transition-all shadow-md"
-            >
+            <p className="text-gray-400 text-sm mb-4">Still have questions? We're happy to help.</p>
+            <a href="mailto:communitytravelservices@gmail.com"
+              className="inline-flex items-center gap-2 bg-navy-700 text-white px-6 py-3 rounded-xl font-bold hover:bg-navy-800 transition-all shadow-md">
               <Mail className="w-4 h-4" /> Email Us Directly
             </a>
           </div>
