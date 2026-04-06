@@ -29,7 +29,7 @@ export default function AboutPage() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold mb-4">About Us</h1>
           <p className="text-navy-300 text-base sm:text-xl max-w-2xl mx-auto">
-            Community Tours and Travels  Nepal's trusted adventure partner since 2008.
+            Community Travels Services Nepal's trusted adventure partner since 2008.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">

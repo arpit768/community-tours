@@ -4,7 +4,7 @@ import { api } from '../store';
 import type { Package, Destination } from '../store';
 
 const faqs = [
-  { q: 'How do I book a tour with Community Tours and Travels?', a: 'You can book directly through our website by selecting your desired package and filling the inquiry form, or contact us via phone/email. Our team will confirm availability and send you a booking confirmation within 24 hours.' },
+  { q: 'How do I book a tour with Community Travels Services?', a: 'You can book directly through our website by selecting your desired package and filling the inquiry form, or contact us via phone/email. Our team will confirm availability and send you a booking confirmation within 24 hours.' },
   { q: 'What is included in your tour packages?', a: 'Most packages include accommodation (teahouses or hotels depending on the route), meals (breakfast + dinner on treks), an experienced guide, a porter, all required trekking permits, and airport transfers. Flights, personal gear, and travel insurance are not included unless specified.' },
   { q: 'Do I need travel insurance for trekking in Nepal?', a: 'Yes, we strongly recommend comprehensive travel insurance that covers high-altitude trekking and emergency helicopter evacuation. We can help arrange suitable insurance if needed.' },
   { q: 'What is your cancellation and refund policy?', a: 'Cancellations made 30+ days before departure receive a full refund minus a 10% administrative fee. 15–29 days: 50% refund. Within 14 days: no refund. We recommend trip cancellation insurance for peace of mind.' },

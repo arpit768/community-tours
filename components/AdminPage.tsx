@@ -210,7 +210,7 @@ export default function AdminPage() {
               <Lock className="w-8 h-8 text-brand-400" />
             </div>
             <h1 className="text-2xl font-bold text-navy-800">Admin Panel</h1>
-            <p className="text-gray-400 text-sm mt-1">Community Tours and Travels</p>
+            <p className="text-gray-400 text-sm mt-1">Community Travels Services </p>
           </div>
           <form onSubmit={login} className="space-y-4">
             <div>
@@ -252,7 +252,7 @@ export default function AdminPage() {
           </div>
           <div>
             <h1 className="font-bold text-sm sm:text-base leading-tight">Admin Panel</h1>
-            <p className="text-navy-400 text-[10px]">Community Tours and Travels</p>
+            <p className="text-navy-400 text-[10px]">Community Travels  Services </p>
           </div>
         </div>
         <button onClick={handleLogout} className="flex items-center gap-1.5 text-navy-300 hover:text-white text-sm transition-colors">
@@ -775,7 +775,7 @@ export default function AdminPage() {
                             const body = [
                               `Dear ${viewInquiry.name},`,
                               '',
-                              'Thank you for reaching out to Community Tours and Travels!',
+                              'Thank you for reaching out to Community Travels Services!',
                               '',
                               '--- Your inquiry details ---',
                               viewInquiry.package ? `Package: ${viewInquiry.package}` : '',
@@ -785,7 +785,7 @@ export default function AdminPage() {
                               '---',
                               '',
                               'Best regards,',
-                              'Community Tours and Travels',
+                              'Community Travels Services',
                               '+977-01-4976661 | communitytravelservices@gmail.com',
                             ].filter(Boolean).join('\n');
                             return `mailto:${viewInquiry.email}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;

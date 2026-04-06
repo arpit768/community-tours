@@ -62,7 +62,7 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-lg font-bold text-navy-800 mb-3">2. Cancellation by the Company</h2>
-            <p>Community Tours and Travels reserves the right to cancel or modify a tour due to:</p>
+            <p>Community Travels Services reserves the right to cancel or modify a tour due to:</p>
             <ul className="list-disc pl-6 space-y-2 mt-3">
               <li>Insufficient number of participants (minimum group size not met).</li>
               <li>Adverse weather conditions, natural disasters, or safety concerns.</li>
@@ -87,7 +87,7 @@ export default function RefundPage() {
 
           <section>
             <h2 className="text-lg font-bold text-navy-800 mb-3">5. Travel Insurance</h2>
-            <p>We strongly recommend purchasing comprehensive travel insurance that covers trip cancellation, medical emergencies, and high-altitude evacuation. This can protect your investment in case of unforeseen circumstances. Community Tours and Travels is not responsible for any losses not covered by your insurance policy.</p>
+            <p>We strongly recommend purchasing comprehensive travel insurance that covers trip cancellation, medical emergencies, and high-altitude evacuation. This can protect your investment in case of unforeseen circumstances. Community Travels Services is not responsible for any losses not covered by your insurance policy.</p>
           </section>
 
           <section>
@@ -104,7 +104,7 @@ export default function RefundPage() {
             <h2 className="text-lg font-bold text-navy-800 mb-3">8. Contact</h2>
             <p>For cancellation or refund requests, please contact us at:</p>
             <div className="mt-3 bg-gray-50 rounded-xl p-4 space-y-1">
-              <p><strong>Community Tours and Travels Pvt. Ltd.</strong></p>
+              <p><strong>Community Travels Services Pvt. Ltd.</strong></p>
               <p>Thapathali-11, Kathmandu, Nepal</p>
               <p>Phone: +977-01-4976661 | +977-9851416661</p>
               <p>Email: <a href="mailto:communitytravelservices@gmail.com" className="text-brand-400 hover:underline">communitytravelservices@gmail.com</a></p>

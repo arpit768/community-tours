@@ -90,7 +90,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-bold text-navy-800 mb-3">9. Contact</h2>
             <div className="bg-gray-50 rounded-xl p-4 space-y-1">
-              <p><strong>Community Tours and Travels Pvt. Ltd.</strong></p>
+              <p><strong>Community Travels Services Pvt. Ltd.</strong></p>
               <p>Thapathali-11, Kathmandu, Nepal</p>
               <p>Phone: +977-01-4976661 | +977-9851416661</p>
               <p>Email: <a href="mailto:communitytravelservices@gmail.com" className="text-brand-400 hover:underline">communitytravelservices@gmail.com</a></p>

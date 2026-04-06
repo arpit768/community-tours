@@ -76,7 +76,7 @@ const App: React.FC = () => {
             <div className="flex items-center gap-3 mb-4">
               <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
               <div>
-                <h2 className="font-bold text-lg leading-tight">Community Tours and Travels</h2>
+                <h2 className="font-bold text-lg leading-tight">Community Travels Services</h2>
                 <p className="text-brand-400 text-xs font-semibold tracking-wider uppercase">Nepal's Trusted Partner</p>
               </div>
             </div>
@@ -115,7 +115,7 @@ const App: React.FC = () => {
           </div>
         </div>
         <div className="max-w-7xl mx-auto px-4 py-4 border-t border-navy-800 text-center text-xs text-navy-400">
-          &copy; {new Date().getFullYear()} Community Tours and Travels Pvt. Ltd. Kathmandu, Nepal. &nbsp;|&nbsp; Sun–Fri: 9:00 AM – 6:00 PM NPT
+          &copy; {new Date().getFullYear()} Community Travels Services Pvt. Ltd. Kathmandu, Nepal. &nbsp;|&nbsp; Sun–Fri: 9:00 AM – 6:00 PM NPT
         </div>
       </footer>
     </div>
