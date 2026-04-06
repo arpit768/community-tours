@@ -6,7 +6,7 @@ const services = [
     bg: 'bg-navy-700',
     badge: 'bg-brand-400',
     title: 'Trekking & Hiking',
-    desc: "Expert-guided treks through Nepal's most iconic trails — from the Annapurna Circuit to Everest Base Camp. All fitness levels welcome.",
+    desc: "Expert-guided treks through Nepal's most iconic trails  from the Annapurna Circuit to Everest Base Camp. All fitness levels welcome.",
     features: ['Certified guides', 'Gear rental', 'Permit assistance', 'Altitude support'],
   },
   {
@@ -30,7 +30,7 @@ const services = [
     bg: 'bg-crimson-500',
     badge: 'bg-navy-700',
     title: 'Pilgrimage Tours',
-    desc: "Sacred journeys to Nepal's most revered Hindu and Buddhist shrines — a deeply spiritual travel experience.",
+    desc: "Sacred journeys to Nepal's most revered Hindu and Buddhist shrines  a deeply spiritual travel experience.",
     features: ['Pashupatinath', 'Muktinath', 'Lumbini', 'Kopan Monastery'],
   },
   {
@@ -46,7 +46,7 @@ const services = [
     bg: 'bg-sky-400',
     badge: 'bg-crimson-500',
     title: 'Travel Insurance',
-    desc: 'Comprehensive travel insurance tailored for Nepal adventures — covering trekking, emergencies, and trip cancellation.',
+    desc: 'Comprehensive travel insurance tailored for Nepal adventures  covering trekking, emergencies, and trip cancellation.',
     features: ['Medical coverage', 'Helicopter rescue', 'Trip cancellation', '24/7 assistance'],
   },
 ];
@@ -65,7 +65,7 @@ export default function ServicesPage() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold mb-4">Our Services</h1>
           <p className="text-navy-300 text-base sm:text-xl max-w-2xl mx-auto">
-            From thrilling mountain treks to peaceful cultural journeys — a complete range of travel services across Nepal.
+            From thrilling mountain treks to peaceful cultural journeys  a complete range of travel services across Nepal.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">

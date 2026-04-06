@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Lock, Package, MapPin, MessageSquare, Plus, Edit2, Trash2, Save, X, Eye, LogOut, BarChart2, CheckCircle, Clock, AlertCircle, Star, Quote } from 'lucide-react';
-import { store } from '../store';
+import { Lock, Package, MapPin, MessageSquare, Plus, Edit2, Trash2, Save, X, Eye, LogOut, BarChart2, CheckCircle, Clock, AlertCircle, Star, Quote, Upload, Image, Link } from 'lucide-react';
+import { auth, api } from '../store';
 import type { Package as Pkg, Destination, Inquiry, Testimonial } from '../store';
-
-const ADMIN_PASSWORD = 'ctt@admin2024';
 
 type Tab = 'dashboard' | 'packages' | 'destinations' | 'inquiries' | 'testimonials';
 
@@ -17,9 +15,12 @@ const DIFFICULTIES = ['Easy','Moderate','Challenging','Extreme'];
 
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const [email, setEmail] = useState('');
   const [pw, setPw] = useState('');
   const [pwError, setPwError] = useState('');
   const [tab, setTab] = useState<Tab>('dashboard');
+  const [loading, setLoading] = useState(false);
 
   // Data state
   const [packages, setPackages] = useState<Pkg[]>([]);
@@ -36,6 +37,10 @@ export default function AdminPage() {
   const [newDest, setNewDest] = useState({ name: '', region: '' });
   const [addingDest, setAddingDest] = useState(false);
 
+  // Image upload
+  const [uploading, setUploading] = useState(false);
+  const [imageMode, setImageMode] = useState<'file' | 'url'>('file');
+
   // Inquiry detail
   const [viewInquiry, setViewInquiry] = useState<Inquiry | null>(null);
 
@@ -45,113 +50,133 @@ export default function AdminPage() {
   const [addingT, setAddingT] = useState(false);
   const [newT, setNewT] = useState<Omit<Testimonial, 'id'>>(emptyT);
 
+  // Check existing token on mount
   useEffect(() => {
-    if (authed) {
-      setPackages(store.getPackages());
-      setDestinations(store.getDestinations());
-      setInquiries(store.getInquiries());
-      setTestimonials(store.getTestimonials());
+    if (auth.getToken()) {
+      auth.verify().then(valid => {
+        setAuthed(valid);
+        if (!valid) auth.logout();
+        setChecking(false);
+      });
+    } else {
+      setChecking(false);
     }
+  }, []);
+
+  // Load data when authed
+  useEffect(() => {
+    if (authed) refresh();
   }, [authed]);
 
-  const refresh = () => {
-    setPackages(store.getPackages());
-    setDestinations(store.getDestinations());
-    setInquiries(store.getInquiries());
-    setTestimonials(store.getTestimonials());
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const [pkgs, dests, inqs, tests] = await Promise.all([
+        api.getPackages(),
+        api.getDestinations(),
+        api.getInquiries(),
+        api.getTestimonials(),
+      ]);
+      setPackages(pkgs);
+      setDestinations(dests);
+      setInquiries(inqs);
+      setTestimonials(tests);
+    } catch (err) {
+      console.error('Failed to load data:', err);
+    }
+    setLoading(false);
   };
 
   // Testimonial ops
-  const saveT = () => {
+  const saveT = async () => {
     if (!newT.name || !newT.text) return alert('Name and review text are required');
     const avatar = newT.avatar || newT.name[0].toUpperCase();
-    const updated = [...testimonials, { ...newT, avatar, id: Date.now().toString() }];
-    store.saveTestimonials(updated);
-    setTestimonials(updated);
+    await api.createTestimonial({ ...newT, avatar });
     setAddingT(false);
     setNewT(emptyT);
+    refresh();
   };
-  const updateT = () => {
+  const updateT = async () => {
     if (!editingT) return;
     const avatar = editingT.avatar || editingT.name[0].toUpperCase();
-    const updated = testimonials.map(t => t.id === editingT.id ? { ...editingT, avatar } : t);
-    store.saveTestimonials(updated);
-    setTestimonials(updated);
+    await api.updateTestimonial(editingT.id, { ...editingT, avatar });
     setEditingT(null);
+    refresh();
   };
-  const deleteT = (id: string) => {
+  const deleteT = async (id: string) => {
     if (!confirm('Delete this testimonial?')) return;
-    const updated = testimonials.filter(t => t.id !== id);
-    store.saveTestimonials(updated);
-    setTestimonials(updated);
+    await api.deleteTestimonial(id);
+    refresh();
   };
 
-  const login = (e: React.FormEvent) => {
+  const login = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pw === ADMIN_PASSWORD) { setAuthed(true); setPwError(''); }
-    else { setPwError('Incorrect password. Please try again.'); }
+    try {
+      await auth.login(email, pw);
+      setAuthed(true);
+      setPwError('');
+    } catch {
+      setPwError('Invalid credentials. Please try again.');
+    }
+  };
+
+  const handleLogout = () => {
+    auth.logout();
+    setAuthed(false);
   };
 
   // Package ops
-  const savePkg = () => {
+  const savePkg = async () => {
     if (!newPkg.name || !newPkg.location) return alert('Name and location are required');
-    const updated = [...packages, { ...newPkg, id: Date.now().toString() }];
-    store.savePackages(updated);
-    setPackages(updated);
+    await api.createPackage(newPkg);
     setAddingPkg(false);
     setNewPkg(emptyPkg);
+    refresh();
   };
 
-  const updatePkg = () => {
+  const updatePkg = async () => {
     if (!editingPkg) return;
-    const updated = packages.map(p => p.id === editingPkg.id ? editingPkg : p);
-    store.savePackages(updated);
-    setPackages(updated);
+    await api.updatePackage(editingPkg.id, editingPkg);
     setEditingPkg(null);
+    refresh();
   };
 
-  const deletePkg = (id: string) => {
+  const deletePkg = async (id: string) => {
     if (!confirm('Delete this package?')) return;
-    const updated = packages.filter(p => p.id !== id);
-    store.savePackages(updated);
-    setPackages(updated);
+    await api.deletePackage(id);
+    refresh();
   };
 
   // Destination ops
-  const addDest = () => {
+  const addDest = async () => {
     if (!newDest.name) return alert('Destination name is required');
-    const updated = [...destinations, { ...newDest, id: Date.now().toString() }];
-    store.saveDestinations(updated);
-    setDestinations(updated);
+    await api.createDestination(newDest);
     setNewDest({ name: '', region: '' });
     setAddingDest(false);
+    refresh();
   };
 
-  const deleteDest = (id: string) => {
+  const deleteDest = async (id: string) => {
     if (!confirm('Remove this destination?')) return;
-    const updated = destinations.filter(d => d.id !== id);
-    store.saveDestinations(updated);
-    setDestinations(updated);
+    await api.deleteDestination(id);
+    refresh();
   };
 
   // Inquiry ops
-  const markRead = (id: string) => {
-    const updated = inquiries.map(i => i.id === id ? { ...i, status: 'read' as const } : i);
-    store.saveInquiries(updated);
-    setInquiries(updated);
-    if (viewInquiry?.id === id) setViewInquiry(updated.find(i => i.id === id) ?? null);
+  const markRead = async (id: string) => {
+    const updated = await api.updateInquiryStatus(id, 'read');
+    setInquiries(prev => prev.map(i => i.id === id ? updated : i));
+    if (viewInquiry?.id === id) setViewInquiry(updated);
   };
-  const markReplied = (id: string) => {
-    const updated = inquiries.map(i => i.id === id ? { ...i, status: 'replied' as const } : i);
-    store.saveInquiries(updated);
-    setInquiries(updated);
-    if (viewInquiry?.id === id) setViewInquiry(updated.find(i => i.id === id) ?? null);
+  const markReplied = async (id: string) => {
+    const updated = await api.updateInquiryStatus(id, 'replied');
+    setInquiries(prev => prev.map(i => i.id === id ? updated : i));
+    if (viewInquiry?.id === id) setViewInquiry(updated);
   };
-  const deleteInquiry = (id: string) => {
+  const deleteInquiry = async (id: string) => {
     if (!confirm('Delete this inquiry?')) return;
-    const updated = inquiries.filter(i => i.id !== id);
-    store.saveInquiries(updated);
-    setInquiries(updated);
+    await api.deleteInquiry(id);
+    setInquiries(prev => prev.filter(i => i.id !== id));
     if (viewInquiry?.id === id) setViewInquiry(null);
   };
 
@@ -165,6 +190,15 @@ export default function AdminPage() {
     if (s === 'read') return <span className="bg-brand-400/10 text-brand-500 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"><Eye className="w-3 h-3"/>Read</span>;
     return <span className="bg-sky-400/10 text-sky-500 text-xs font-bold px-2.5 py-1 rounded-full flex items-center gap-1"><CheckCircle className="w-3 h-3"/>Replied</span>;
   };
+
+  // ── Loading / Checking Token ──────────────────────────────────────────────
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-navy-950 flex items-center justify-center">
+        <div className="text-navy-300 text-sm">Checking session...</div>
+      </div>
+    );
+  }
 
   // ── Login Screen ──────────────────────────────────────────────────────────
   if (!authed) {
@@ -180,9 +214,14 @@ export default function AdminPage() {
           </div>
           <form onSubmit={login} className="space-y-4">
             <div>
+              <label className="block text-sm font-semibold text-navy-700 mb-2">Email</label>
+              <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@communitytours.com"
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors" autoFocus />
+            </div>
+            <div>
               <label className="block text-sm font-semibold text-navy-700 mb-2">Password</label>
               <input type="password" value={pw} onChange={e => setPw(e.target.value)} placeholder="Enter admin password"
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors" autoFocus />
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors" />
             </div>
             {pwError && <p className="text-crimson-500 text-sm font-medium">{pwError}</p>}
             <button type="submit" className="w-full bg-navy-700 text-white py-3.5 rounded-xl font-bold hover:bg-navy-800 transition-all">
@@ -216,10 +255,14 @@ export default function AdminPage() {
             <p className="text-navy-400 text-[10px]">Community Tours and Travels</p>
           </div>
         </div>
-        <button onClick={() => setAuthed(false)} className="flex items-center gap-1.5 text-navy-300 hover:text-white text-sm transition-colors">
+        <button onClick={handleLogout} className="flex items-center gap-1.5 text-navy-300 hover:text-white text-sm transition-colors">
           <LogOut className="w-4 h-4" /> Sign Out
         </button>
       </header>
+
+      {loading && (
+        <div className="bg-brand-400 text-white text-center text-xs py-1.5 font-semibold">Loading data...</div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 flex flex-col lg:flex-row gap-6">
 
@@ -270,7 +313,7 @@ export default function AdminPage() {
                     <div key={i.id} className="flex items-center justify-between py-3 border-b border-gray-50 last:border-0">
                       <div>
                         <div className="font-semibold text-navy-700 text-sm">{i.name}</div>
-                        <div className="text-xs text-gray-400">{i.type === 'booking' ? '📅 Booking' : '✉ Contact'} · {new Date(i.submittedAt).toLocaleDateString()}</div>
+                        <div className="text-xs text-gray-400">{i.type === 'booking' ? 'Booking' : 'Contact'} · {new Date(i.submittedAt).toLocaleDateString()}</div>
                       </div>
                       <div className="flex items-center gap-2">
                         {statusBadge(i.status)}
@@ -306,7 +349,6 @@ export default function AdminPage() {
                       { label: 'Location *', field: 'location', type: 'text', placeholder: 'e.g. Khumbu, Solukhumbu' },
                       { label: 'Price (NPR)', field: 'price', type: 'number', placeholder: '0' },
                       { label: 'Duration (days)', field: 'duration', type: 'number', placeholder: '1' },
-                      { label: 'Image URL', field: 'image', type: 'text', placeholder: 'https://...' },
                     ].map(f => (
                       <div key={f.field}>
                         <label className="block text-xs font-semibold text-navy-600 mb-1.5">{f.label}</label>
@@ -319,6 +361,79 @@ export default function AdminPage() {
                           className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-navy-700 transition-colors" />
                       </div>
                     ))}
+
+                    {/* Image Upload / URL */}
+                    <div className="sm:col-span-2">
+                      <label className="block text-xs font-semibold text-navy-600 mb-1.5">Package Image</label>
+                      <div className="flex items-center gap-2 mb-3">
+                        <button type="button" onClick={() => setImageMode('file')}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${imageMode === 'file' ? 'bg-navy-700 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
+                          <Upload className="w-3.5 h-3.5" /> Upload File
+                        </button>
+                        <button type="button" onClick={() => setImageMode('url')}
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${imageMode === 'url' ? 'bg-navy-700 text-white' : 'bg-gray-100 text-gray-500 hover:bg-gray-200'}`}>
+                          <Link className="w-3.5 h-3.5" /> Image URL
+                        </button>
+                      </div>
+
+                      {imageMode === 'file' ? (
+                        <div className="flex items-center gap-4">
+                          <label className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed rounded-xl cursor-pointer transition-colors ${uploading ? 'border-brand-400 bg-brand-400/5' : 'border-gray-300 hover:border-navy-400 hover:bg-gray-50'}`}>
+                            {uploading ? (
+                              <span className="text-sm text-brand-500 font-semibold">Uploading...</span>
+                            ) : (
+                              <>
+                                <Image className="w-5 h-5 text-gray-400" />
+                                <span className="text-sm text-gray-500">Choose an image (max 5MB)</span>
+                              </>
+                            )}
+                            <input type="file" accept="image/*" className="hidden" disabled={uploading}
+                              onChange={async (e) => {
+                                const file = e.target.files?.[0];
+                                if (!file) return;
+                                setUploading(true);
+                                try {
+                                  const { url } = await api.uploadImage(file);
+                                  if (editingPkg) setEditingPkg({ ...editingPkg, image: url });
+                                  else setNewPkg({ ...newPkg, image: url });
+                                } catch (err: any) {
+                                  alert(err.message || 'Upload failed');
+                                }
+                                setUploading(false);
+                                e.target.value = '';
+                              }}
+                            />
+                          </label>
+                        </div>
+                      ) : (
+                        <input type="text" placeholder="https://images.unsplash.com/..."
+                          value={editingPkg ? editingPkg.image : newPkg.image}
+                          onChange={e => editingPkg
+                            ? setEditingPkg({ ...editingPkg, image: e.target.value })
+                            : setNewPkg({ ...newPkg, image: e.target.value })
+                          }
+                          className="w-full px-3 py-2.5 border-2 border-gray-200 rounded-xl text-sm focus:outline-none focus:border-navy-700 transition-colors" />
+                      )}
+
+                      {/* Preview */}
+                      {(editingPkg?.image || newPkg.image) && (
+                        <div className="mt-3 flex items-start gap-3">
+                          <img
+                            src={editingPkg ? editingPkg.image : newPkg.image}
+                            alt="Preview"
+                            className="w-24 h-16 object-cover rounded-lg border border-gray-200"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                            onLoad={(e) => { (e.target as HTMLImageElement).style.display = 'block'; }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs text-gray-400 truncate">{editingPkg ? editingPkg.image : newPkg.image}</p>
+                            <button type="button" onClick={() => editingPkg ? setEditingPkg({ ...editingPkg, image: '' }) : setNewPkg({ ...newPkg, image: '' })}
+                              className="text-xs text-crimson-500 hover:underline mt-1">Remove image</button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
                     <div>
                       <label className="block text-xs font-semibold text-navy-600 mb-1.5">Type</label>
                       <select value={editingPkg ? editingPkg.type : newPkg.type}
@@ -583,9 +698,9 @@ export default function AdminPage() {
               <div className="flex items-center justify-between flex-wrap gap-3">
                 <h2 className="text-xl font-bold text-navy-800">Inquiries & Bookings</h2>
                 <div className="flex gap-2 text-xs font-bold">
-                  <span className="bg-brand-400/10 text-brand-500 px-3 py-1.5 rounded-full">📅 Bookings: {bookingCount}</span>
-                  <span className="bg-sky-400/10 text-sky-500 px-3 py-1.5 rounded-full">✉ Contacts: {contactCount}</span>
-                  <span className="bg-crimson-500/10 text-crimson-500 px-3 py-1.5 rounded-full">🔴 New: {newCount}</span>
+                  <span className="bg-brand-400/10 text-brand-500 px-3 py-1.5 rounded-full">Bookings: {bookingCount}</span>
+                  <span className="bg-sky-400/10 text-sky-500 px-3 py-1.5 rounded-full">Contacts: {contactCount}</span>
+                  <span className="bg-crimson-500/10 text-crimson-500 px-3 py-1.5 rounded-full">New: {newCount}</span>
                 </div>
               </div>
 
@@ -602,7 +717,7 @@ export default function AdminPage() {
                           <div className="flex items-center gap-2 mb-0.5">
                             <span className="font-bold text-navy-800 text-sm truncate">{i.name}</span>
                             <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0 ${i.type === 'booking' ? 'bg-brand-400/20 text-brand-500' : 'bg-sky-400/20 text-sky-500'}`}>
-                              {i.type === 'booking' ? '📅' : '✉'} {i.type}
+                              {i.type}
                             </span>
                           </div>
                           <div className="text-xs text-gray-400 truncate">{i.package || i.subject || 'No subject'}</div>
@@ -653,7 +768,28 @@ export default function AdminPage() {
                         )}
 
                         <div className="flex flex-col gap-2 pt-2 border-t border-gray-100">
-                          <a href={`mailto:${viewInquiry.email}`}
+                          <a href={(() => {
+                            const subj = viewInquiry.type === 'booking'
+                              ? `Re: Your Booking Inquiry${viewInquiry.package ? ` - ${viewInquiry.package}` : ''}`
+                              : `Re: ${viewInquiry.subject || 'Your Inquiry'} - Community Tours`;
+                            const body = [
+                              `Dear ${viewInquiry.name},`,
+                              '',
+                              'Thank you for reaching out to Community Tours and Travels!',
+                              '',
+                              '--- Your inquiry details ---',
+                              viewInquiry.package ? `Package: ${viewInquiry.package}` : '',
+                              viewInquiry.destination ? `Destination: ${viewInquiry.destination}` : '',
+                              viewInquiry.travelDate ? `Travel Date: ${viewInquiry.travelDate}` : '',
+                              viewInquiry.travelers ? `Travelers: ${viewInquiry.travelers}` : '',
+                              '---',
+                              '',
+                              'Best regards,',
+                              'Community Tours and Travels',
+                              '+977-01-4976661 | communitytravelservices@gmail.com',
+                            ].filter(Boolean).join('\n');
+                            return `mailto:${viewInquiry.email}?subject=${encodeURIComponent(subj)}&body=${encodeURIComponent(body)}`;
+                          })()}
                             className="bg-brand-400 text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-500 transition-all text-center">
                             Reply via Email
                           </a>

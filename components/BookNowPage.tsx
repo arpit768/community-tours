@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Calendar, Users, MapPin, Compass, Send, CheckCircle, Phone, Mail, Clock } from 'lucide-react';
-import { store } from '../store';
+import { api } from '../store';
 import type { Package, Destination } from '../store';
 
 export default function BookNowPage() {
@@ -13,8 +13,8 @@ export default function BookNowPage() {
   });
 
   useEffect(() => {
-    setPackages(store.getPackages());
-    setDestinations(store.getDestinations());
+    api.getPackages().then(setPackages).catch(console.error);
+    api.getDestinations().then(setDestinations).catch(console.error);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -23,8 +23,7 @@ export default function BookNowPage() {
       alert('Please fill in all required fields');
       return;
     }
-    store.addInquiry({ type: 'booking', ...form });
-    setSubmitted(true);
+    api.submitInquiry({ type: 'booking', ...form }).then(() => setSubmitted(true)).catch(() => alert('Failed to submit. Please try again.'));
   };
 
   if (submitted) {
@@ -163,7 +162,7 @@ export default function BookNowPage() {
                     className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white">
                     <option value="">-- Choose destination --</option>
                     {destinations.map(d => (
-                      <option key={d.id} value={d.name}>{d.name} — {d.region}</option>
+                      <option key={d.id} value={d.name}>{d.name}  {d.region}</option>
                     ))}
                     <option value="Multiple">Multiple destinations</option>
                   </select>

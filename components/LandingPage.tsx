@@ -1,59 +1,26 @@
 import { useState, useEffect } from 'react';
 import { Compass, Shield, MapPin, Clock, CheckCircle, Star, Award, Users, Zap, TrendingUp, Phone, Mail, Quote } from 'lucide-react';
-import { store } from '../store';
-import type { Testimonial } from '../store';
+import { api } from '../store';
+import type { Package, Testimonial } from '../store';
 
 interface LandingPageProps {
   onNavigate: (view: string) => void;
 }
 
-const staticTours = [
-  {
-    id: '1',
-    name: 'Everest Base Camp Trek',
-    type: 'Adventure Trek',
-    pricePerPerson: 45000,
-    location: 'Khumbu, Solukhumbu',
-    image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600',
-    difficulty: 'Challenging',
-    duration: 14,
-    maxGroupSize: 12,
-    description: "The ultimate trekking adventure to the base of the world's highest mountain. Breathtaking Himalayan scenery and rich Sherpa culture.",
-    diffColor: 'bg-crimson-500',
-  },
-  {
-    id: '2',
-    name: 'Annapurna Circuit',
-    type: 'Adventure Trek',
-    pricePerPerson: 38000,
-    location: 'Annapurna, Gandaki',
-    image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600',
-    difficulty: 'Moderate',
-    duration: 12,
-    maxGroupSize: 15,
-    description: 'A classic circuit trek with incredible mountain views, diverse landscapes, and rich cultural encounters.',
-    diffColor: 'bg-brand-400',
-  },
-  {
-    id: '3',
-    name: 'Kathmandu Cultural Tour',
-    type: 'Cultural Tour',
-    pricePerPerson: 12000,
-    location: 'Kathmandu Valley',
-    image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=600',
-    difficulty: 'Easy',
-    duration: 3,
-    maxGroupSize: 20,
-    description: 'Explore ancient temples, royal palaces, and vibrant bazaars of the UNESCO-listed Kathmandu Valley.',
-    diffColor: 'bg-sky-400',
-  },
-];
+const diffColor: Record<string, string> = {
+  Easy: 'bg-sky-400',
+  Moderate: 'bg-brand-400',
+  Challenging: 'bg-crimson-500',
+  Extreme: 'bg-navy-700',
+};
 
 export default function LandingPage({ onNavigate }: LandingPageProps) {
+  const [featuredPkgs, setFeaturedPkgs] = useState<Package[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
 
   useEffect(() => {
-    setTestimonials(store.getTestimonials());
+    api.getPackages().then(pkgs => setFeaturedPkgs(pkgs.slice(0, 3))).catch(console.error);
+    api.getTestimonials().then(setTestimonials).catch(console.error);
   }, []);
 
   return (
@@ -80,7 +47,7 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
             </h1>
 
             <p className="text-lg sm:text-xl lg:text-2xl mb-10 text-navy-200 max-w-2xl mx-auto leading-relaxed">
-              Discover handcrafted tour packages led by expert guides. From Himalayan treks to cultural journeys — unforgettable adventures across Nepal.
+              Discover handcrafted tour packages led by expert guides. From Himalayan treks to cultural journeys  unforgettable adventures across Nepal.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -169,13 +136,13 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-            {staticTours.map((tour) => (
-              <div key={tour.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group hover:-translate-y-2 border border-gray-100">
+            {featuredPkgs.map((pkg) => (
+              <div key={pkg.id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all group hover:-translate-y-2 border border-gray-100">
                 <div className="relative h-48 sm:h-56 overflow-hidden">
-                  <img src={tour.image} alt={tour.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={pkg.image} alt={pkg.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                    <span className="bg-navy-700 text-white px-3 py-1 rounded-full text-xs font-semibold shadow">{tour.type}</span>
-                    <span className={`${tour.diffColor} text-white px-3 py-1 rounded-full text-xs font-semibold shadow`}>{tour.difficulty}</span>
+                    <span className="bg-navy-700 text-white px-3 py-1 rounded-full text-xs font-semibold shadow">{pkg.type}</span>
+                    <span className={`${diffColor[pkg.difficulty] || 'bg-sky-400'} text-white px-3 py-1 rounded-full text-xs font-semibold shadow`}>{pkg.difficulty}</span>
                   </div>
                   <div className="absolute bottom-3 left-3">
                     <span className="bg-white/95 px-2.5 py-1 rounded-full text-xs font-semibold shadow flex items-center gap-1 text-navy-700">
@@ -184,17 +151,16 @@ export default function LandingPage({ onNavigate }: LandingPageProps) {
                   </div>
                 </div>
                 <div className="p-5">
-                  <h3 className="text-lg font-bold text-navy-800 mb-1 group-hover:text-brand-400 transition-colors">{tour.name}</h3>
+                  <h3 className="text-lg font-bold text-navy-800 mb-1 group-hover:text-brand-400 transition-colors">{pkg.name}</h3>
                   <div className="flex items-center gap-3 text-gray-400 text-xs mb-3 flex-wrap">
-                    <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{tour.location}</span>
-                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{tour.duration} days</span>
-                    <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />Max {tour.maxGroupSize}</span>
+                    <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" />{pkg.location}</span>
+                    <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pkg.duration} days</span>
                   </div>
-                  <p className="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{tour.description}</p>
+                  <p className="text-gray-500 text-sm mb-5 line-clamp-2 leading-relaxed">{pkg.description}</p>
                   <div className="flex items-center justify-between pt-4 border-t border-gray-100">
                     <div>
                       <div className="text-xs text-gray-400">Starting from</div>
-                      <div className="font-bold text-navy-800 text-xl">NPR {tour.pricePerPerson.toLocaleString()}</div>
+                      <div className="font-bold text-navy-800 text-xl">NPR {pkg.price.toLocaleString()}</div>
                     </div>
                     <button onClick={() => onNavigate('packages')} className="bg-brand-400 text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-brand-500 transition-all shadow flex items-center gap-1.5">
                       Book <Compass className="w-4 h-4" />

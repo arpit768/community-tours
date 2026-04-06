@@ -29,7 +29,7 @@ export default function AboutPage() {
           </div>
           <h1 className="text-3xl sm:text-5xl font-bold mb-4">About Us</h1>
           <p className="text-navy-300 text-base sm:text-xl max-w-2xl mx-auto">
-            Community Tours and Travels — Nepal's trusted adventure partner since 2008.
+            Community Tours and Travels  Nepal's trusted adventure partner since 2008.
           </p>
         </div>
         <div className="absolute bottom-0 left-0 right-0">
@@ -47,10 +47,10 @@ export default function AboutPage() {
               <div className="inline-block w-1 h-10 bg-brand-400 rounded-full mr-3 align-middle" />
               <h2 className="text-3xl sm:text-4xl font-bold text-navy-800 mb-6 inline">Our Mission</h2>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-5 mt-4">
-                We believe travel should transform lives — both those who journey and those who call Nepal home. Our mission is to create meaningful, safe, and responsible travel experiences that connect people with the extraordinary beauty and culture of Nepal.
+                We believe travel should transform lives  both those who journey and those who call Nepal home. Our mission is to create meaningful, safe, and responsible travel experiences that connect people with the extraordinary beauty and culture of Nepal.
               </p>
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed">
-                Every tour we offer is crafted with deep local knowledge, a commitment to sustainability, and genuine care for our travelers. We are not just a tour company — we are your gateway to the Himalayas.
+                Every tour we offer is crafted with deep local knowledge, a commitment to sustainability, and genuine care for our travelers. We are not just a tour company  we are your gateway to the Himalayas.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-4">

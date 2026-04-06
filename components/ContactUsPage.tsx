@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare, ChevronDown, ChevronUp, Compass } from 'lucide-react';
-import { store } from '../store';
+import { api } from '../store';
 import type { Package, Destination } from '../store';
 
 const faqs = [
@@ -11,7 +11,7 @@ const faqs = [
   { q: 'What is the best time to trek in Nepal?', a: 'The best trekking seasons are spring (March–May) and autumn (September–November). Both offer stable weather, clear mountain views, and moderate temperatures. Winter treks are possible at lower altitudes.' },
   { q: 'Are your guides certified and experienced?', a: 'All our guides are government-licensed, certified by the Nepal Tourism Board, and trained in wilderness first aid. Most have 10+ years of experience leading treks in the Himalayan region.' },
   { q: 'Can you arrange custom or private tours?', a: "Yes! We specialise in tailored itineraries for individuals, families, and corporate groups. Contact us with your interests, dates, and group size and we'll design the perfect Nepal experience for you." },
-  { q: 'How physically fit do I need to be for trekking?', a: 'Easy-rated tours require minimal fitness. Moderate treks need regular walking stamina. Challenging routes like EBC require serious preparation — we recommend starting training 3 months in advance.' },
+  { q: 'How physically fit do I need to be for trekking?', a: 'Easy-rated tours require minimal fitness. Moderate treks need regular walking stamina. Challenging routes like EBC require serious preparation  we recommend starting training 3 months in advance.' },
 ];
 
 export default function ContactUsPage() {
@@ -22,8 +22,8 @@ export default function ContactUsPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   useEffect(() => {
-    setPackages(store.getPackages());
-    setDestinations(store.getDestinations());
+    api.getPackages().then(setPackages).catch(console.error);
+    api.getDestinations().then(setDestinations).catch(console.error);
   }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -32,8 +32,7 @@ export default function ContactUsPage() {
       alert('Please fill in all required fields');
       return;
     }
-    store.addInquiry({ type: 'contact', ...form });
-    setSubmitted(true);
+    api.submitInquiry({ type: 'contact', ...form }).then(() => setSubmitted(true)).catch(() => alert('Failed to send. Please try again.'));
   };
 
   const contactInfo = [
@@ -56,7 +55,7 @@ export default function ContactUsPage() {
             </div>
             <div>
               <h1 className="text-2xl sm:text-4xl font-bold">Contact Us</h1>
-              <p className="text-navy-300 text-sm sm:text-base mt-1">We'd love to hear from you — let's plan your Nepal adventure</p>
+              <p className="text-navy-300 text-sm sm:text-base mt-1">We'd love to hear from you  let's plan your Nepal adventure</p>
             </div>
           </div>
         </div>
@@ -153,7 +152,7 @@ export default function ContactUsPage() {
                         <select value={form.destination} onChange={e => setForm({...form, destination: e.target.value})}
                           className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-navy-700 transition-colors appearance-none bg-white">
                           <option value="">-- Select destination --</option>
-                          {destinations.map(d => <option key={d.id} value={d.name}>{d.name} — {d.region}</option>)}
+                          {destinations.map(d => <option key={d.id} value={d.name}>{d.name}  {d.region}</option>)}
                           <option value="Multiple / Flexible">Multiple / Flexible</option>
                         </select>
                       </div>

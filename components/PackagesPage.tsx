@@ -1,16 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MapPin, Clock, Users, Shield, Star, Compass, Filter } from 'lucide-react';
-
-const packages = [
-  { id: 1, name: 'Everest Base Camp Trek', type: 'Adventure Trek', price: 45000, location: 'Khumbu, Solukhumbu', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600', difficulty: 'Challenging', duration: 14, maxGroup: 12, rating: 4.9, desc: "The ultimate trekking adventure to the foot of the world's highest mountain. Breathtaking Himalayan scenery and rich Sherpa culture.", category: 'trek' },
-  { id: 2, name: 'Annapurna Circuit', type: 'Adventure Trek', price: 38000, location: 'Annapurna, Gandaki', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=600', difficulty: 'Moderate', duration: 12, maxGroup: 15, rating: 4.8, desc: 'A classic circuit trek with incredible mountain views, diverse landscapes, and rich cultural encounters.', category: 'trek' },
-  { id: 3, name: 'Kathmandu Valley Heritage Tour', type: 'Cultural Tour', price: 12000, location: 'Kathmandu Valley', image: 'https://images.unsplash.com/photo-1605640840605-14ac1855827b?w=600', difficulty: 'Easy', duration: 3, maxGroup: 20, rating: 4.7, desc: 'Explore ancient temples, royal palaces, and vibrant bazaars of the UNESCO-listed Kathmandu Valley.', category: 'cultural' },
-  { id: 4, name: 'Chitwan Wildlife Safari', type: 'Wildlife Safari', price: 18000, location: 'Chitwan National Park', image: 'https://images.unsplash.com/photo-1504173010664-32509107de4e?w=600', difficulty: 'Easy', duration: 4, maxGroup: 10, rating: 4.8, desc: 'Jeep safaris and canoe rides through Chitwan National Park. Spot rhinos, tigers, and hundreds of bird species.', category: 'wildlife' },
-  { id: 5, name: 'Langtang Valley Trek', type: 'Adventure Trek', price: 28000, location: 'Langtang, Rasuwa', image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600', difficulty: 'Moderate', duration: 9, maxGroup: 14, rating: 4.7, desc: 'A beautiful valley trek offering stunning Himalayan views and a close encounter with Tamang culture.', category: 'trek' },
-  { id: 6, name: 'Lumbini Pilgrimage Tour', type: 'Pilgrimage', price: 15000, location: 'Lumbini, Rupandehi', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600', difficulty: 'Easy', duration: 3, maxGroup: 25, rating: 4.6, desc: 'Visit the birthplace of Lord Buddha and explore the sacred monasteries and peace gardens of Lumbini.', category: 'pilgrimage' },
-  { id: 7, name: 'Upper Mustang Expedition', type: 'Mountain Expedition', price: 75000, location: 'Mustang, Gandaki', image: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600', difficulty: 'Challenging', duration: 16, maxGroup: 8, rating: 4.9, desc: 'Explore the ancient kingdom of Lo and its dramatic landscape of red cliffs, caves, and medieval monasteries.', category: 'trek' },
-  { id: 8, name: 'Pokhara City & Lake Tour', type: 'City Tour', price: 8000, location: 'Pokhara, Gandaki', image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=600', difficulty: 'Easy', duration: 2, maxGroup: 20, rating: 4.6, desc: "Boat rides on Phewa Lake, sunrise views of the Annapurna range from Sarangkot, and Pokhara's vibrant lakeside.", category: 'cultural' },
-];
+import { api } from '../store';
+import type { Package } from '../store';
 
 const categories = [
   { value: 'all', label: 'All Packages' },
@@ -27,10 +18,26 @@ const difficultyStyle: Record<string, string> = {
   Extreme: 'bg-navy-700/10 text-navy-700 border border-navy-700/30',
 };
 
+function typeToCategory(type: string): string {
+  const t = type.toLowerCase();
+  if (t.includes('trek') || t.includes('expedition')) return 'trek';
+  if (t.includes('cultural') || t.includes('city') || t.includes('heritage')) return 'cultural';
+  if (t.includes('wildlife') || t.includes('safari')) return 'wildlife';
+  if (t.includes('pilgrimage')) return 'pilgrimage';
+  return 'other';
+}
+
 export default function PackagesPage() {
   const [activeCategory, setActiveCategory] = useState('all');
+  const [packages, setPackages] = useState<Package[]>([]);
 
-  const filtered = activeCategory === 'all' ? packages : packages.filter((p) => p.category === activeCategory);
+  useEffect(() => {
+    api.getPackages().then(setPackages).catch(console.error);
+  }, []);
+
+  const filtered = activeCategory === 'all'
+    ? packages
+    : packages.filter(p => typeToCategory(p.type) === activeCategory);
 
   return (
     <div className="min-h-screen bg-white">
@@ -88,7 +95,7 @@ export default function PackagesPage() {
                   <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
                     <span className="bg-navy-700 text-white px-2.5 py-1 rounded-full text-[10px] font-bold shadow">{pkg.type}</span>
                     <div className="flex items-center gap-1 bg-white/95 px-2 py-1 rounded-full text-[10px] font-bold shadow">
-                      <Star className="w-3 h-3 fill-brand-400 text-brand-400" />{pkg.rating}
+                      <Star className="w-3 h-3 fill-brand-400 text-brand-400" />4.8
                     </div>
                   </div>
                   <div className="absolute bottom-3 left-3">
@@ -101,9 +108,9 @@ export default function PackagesPage() {
                   <div className="flex items-center gap-3 text-gray-400 text-xs mb-3 flex-wrap">
                     <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /><span className="truncate">{pkg.location}</span></span>
                     <span className="flex items-center gap-1"><Clock className="w-3.5 h-3.5" />{pkg.duration}d</span>
-                    <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />Max {pkg.maxGroup}</span>
+                    <span className="flex items-center gap-1"><Users className="w-3.5 h-3.5" />Max 12</span>
                   </div>
-                  <p className="text-gray-500 text-xs line-clamp-2 mb-4 leading-relaxed">{pkg.desc}</p>
+                  <p className="text-gray-500 text-xs line-clamp-2 mb-4 leading-relaxed">{pkg.description}</p>
                   <div className="flex items-center justify-between pt-3 border-t border-gray-100">
                     <div>
                       <div className="text-xs text-gray-400">From</div>
@@ -117,6 +124,9 @@ export default function PackagesPage() {
               </div>
             ))}
           </div>
+          {filtered.length === 0 && (
+            <div className="text-center py-20 text-gray-400">No packages found in this category.</div>
+          )}
         </div>
       </section>
     </div>

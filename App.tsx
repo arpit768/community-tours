@@ -7,8 +7,11 @@ import AboutPage from './components/AboutPage';
 import ContactUsPage from './components/ContactUsPage';
 import BookNowPage from './components/BookNowPage';
 import AdminPage from './components/AdminPage';
+import TermsPage from './components/TermsPage';
+import PrivacyPage from './components/PrivacyPage';
+import RefundPage from './components/RefundPage';
 
-const VIEWS = ['services', 'packages', 'about', 'contact', 'book', 'admin'];
+const VIEWS = ['services', 'packages', 'about', 'contact', 'book', 'admin', 'terms', 'privacy', 'refund'];
 
 function pathToView(pathname: string): string {
   const seg = pathname.replace(/^\//, '').toLowerCase();
@@ -40,6 +43,9 @@ const App: React.FC = () => {
       case 'contact':   return <ContactUsPage />;
       case 'book':      return <BookNowPage />;
       case 'admin':     return <AdminPage />;
+      case 'terms':     return <TermsPage />;
+      case 'privacy':   return <PrivacyPage />;
+      case 'refund':    return <RefundPage />;
       default:          return <LandingPage onNavigate={navigate} />;
     }
   };
@@ -65,7 +71,7 @@ const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="bg-navy-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 pt-12 pb-6 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="max-w-7xl mx-auto px-4 pt-12 pb-6 grid grid-cols-2 md:grid-cols-5 gap-8">
           <div className="col-span-2">
             <div className="flex items-center gap-3 mb-4">
               <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
@@ -82,6 +88,16 @@ const App: React.FC = () => {
             <h3 className="font-bold mb-4 text-brand-400 uppercase text-xs tracking-wider">Pages</h3>
             <ul className="space-y-2 text-sm text-navy-200">
               {[['Home','home'],['Services','services'],['Packages','packages'],['About','about'],['Contact','contact'],['Book Now','book']].map(([label, view]) => (
+                <li key={view}>
+                  <button onClick={() => navigate(view)} className="hover:text-white transition-colors">{label}</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3 className="font-bold mb-4 text-brand-400 uppercase text-xs tracking-wider">Legal</h3>
+            <ul className="space-y-2 text-sm text-navy-200">
+              {[['Terms & Conditions','terms'],['Privacy Policy','privacy'],['Refund Policy','refund']].map(([label, view]) => (
                 <li key={view}>
                   <button onClick={() => navigate(view)} className="hover:text-white transition-colors">{label}</button>
                 </li>
