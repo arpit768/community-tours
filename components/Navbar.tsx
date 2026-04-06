@@ -34,8 +34,8 @@ export default function Navbar({ currentView, onViewChange }: NavbarProps) {
               className="w-11 h-11 rounded-xl object-cover shadow-md group-hover:scale-105 transition-transform"
             />
             <div className="hidden sm:block text-left">
-              <h1 className="text-base font-bold text-navy-700 leading-tight">Community Tours</h1>
-              <p className="text-[10px] text-brand-400 font-semibold tracking-wider uppercase">& Travels</p>
+              <h1 className="text-base font-bold text-navy-700 leading-tight">Community Travels</h1>
+              <p className="text-[10px] text-brand-400 font-semibold tracking-wider uppercase">Services</p>
             </div>
           </button>
 
