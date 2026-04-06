@@ -76,12 +76,12 @@ const App: React.FC = () => {
             <div className="flex items-center gap-3 mb-4">
               <img src="/logo.jpeg" alt="Logo" className="w-10 h-10 rounded-lg object-cover" />
               <div>
-                <h2 className="font-bold text-lg leading-tight">Community Travels Services</h2>
+                <h2 className="font-bold text-lg leading-tight">Community Travels Services Pvt. Ltd.</h2>
                 <p className="text-brand-400 text-xs font-semibold tracking-wider uppercase">Nepal's Trusted Partner</p>
               </div>
             </div>
             <p className="text-navy-200 text-sm leading-relaxed max-w-xs">
-              Empowering travelers to explore the Himalayas with unforgettable, safe, and authentic tour experiences since 2008.
+              Empowering travelers to explore the Himalayas with unforgettable, safe, and authentic tour experiences since 2023.
             </p>
           </div>
           <div>
